@@ -21,7 +21,7 @@
     </layout>
   </appender>
 
-  <logger name="com.inauth">
+  <logger name="com.coding">
     <level value="INFO"/>
   </logger>
 
