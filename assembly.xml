@@ -1,0 +1,86 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+  <id>${dist}</id>
+  <baseDirectory>in-auth-${project.version}-${dist}</baseDirectory>
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <directory>src/main/bin</directory>
+      <outputDirectory>bin</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+      <fileMode>755</fileMode>
+      <filtered>true</filtered>
+    </fileSet>
+    <fileSet>
+      <directory>src/main/data</directory>
+      <outputDirectory>data</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+    <!-- copy start-*.jar -->
+    <fileSet>
+      <directory>lib</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>**/*.jar</include>
+      </includes>
+    </fileSet>   
+    <!-- copy override files.  Need to do this file as the first archived file wins -->
+    <fileSet>
+      <directory>${override.conf.dir}</directory>
+      <outputDirectory>conf</outputDirectory>
+      <includes>
+        <include>*.xml</include>
+        <include>*.properties</include>
+      </includes>
+      <filtered>false</filtered>
+    </fileSet>
+    <!-- copy conf files, replacing tokens -->
+    <fileSet>
+      <directory>conf</directory>
+      <outputDirectory>conf</outputDirectory>
+      <includes>
+        <include>*.xml</include>
+        <include>*.properties</include>
+      </includes>
+      <filtered>false</filtered>
+    </fileSet>
+    <!-- create an empty logs directory for requestLogs -->
+    <fileSet>
+      <directory>conf</directory>
+      <outputDirectory>logs</outputDirectory>
+      <includes>
+        <include></include>
+      </includes>
+      <filtered>false</filtered>
+    </fileSet>
+    
+    <!-- copy war -->
+    <fileSet>
+      <directory>target</directory>
+      <outputDirectory>./</outputDirectory>
+      <includes>
+        <include>*.war</include>
+      </includes>
+      <filtered>false</filtered>
+    </fileSet>
+    
+  </fileSets>
+
+  <dependencySets>
+    <dependencySet>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>org.eclipse.jetty:jetty-runner</include>
+        <include>org.eclipse.jetty:jetty-maven-plugin</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+</assembly>
