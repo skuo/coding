@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.coding.inauth.InAuth;
 import com.coding.inauth.model.Location;
 import com.coding.inauth.service.data.LocationDs;
 import com.coding.model.RestStatus;
@@ -34,6 +35,9 @@ public class InAuthController {
     @Autowired
     LocationDs locationDs;
 
+    @Autowired 
+    InAuth inAuth;
+    
     @RequestMapping(method = RequestMethod.GET, value = "/inauth/location/{latitude}/{longitude}/", headers = "accept=application/json")
     @ResponseBody
     public Location getLocation(@PathVariable float latitude, @PathVariable float longitude, HttpServletRequest request,
@@ -108,6 +112,20 @@ public class InAuthController {
         return restStatus;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/inauth/initialLoad", headers = "accept=application/json")
+    @ResponseBody
+    public RestStatus initialLoad(HttpServletRequest request, HttpServletResponse response, @RequestBody String body)
+            throws Exception {
+        
+        RestStatus restStatus = new RestStatus(RestStatus.SUCCESS, "");
+        boolean result = inAuth.initialLoad();
+        if (!result) {
+            restStatus.setStatus(RestStatus.FAILURE);
+            restStatus.setMessage("Insertion Failed");
+        }
+
+        return restStatus;
+    }
     @SuppressWarnings("unused")
     private void printHeader(HttpServletRequest request) {
         Enumeration<String> names = request.getHeaderNames();

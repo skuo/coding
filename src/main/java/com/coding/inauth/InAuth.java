@@ -1,10 +1,24 @@
 package com.coding.inauth;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
-import com.coding.inauth.model.Location;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.coding.inauth.model.Location;
+import com.coding.inauth.service.data.DataServiceException;
+import com.coding.inauth.service.data.LocationDs;
+
+@Component
 public class InAuth {
+    private static final Log log = LogFactory.getLog(InAuth.class);
+
+    @Autowired
+    LocationDs locationDs;
 
     // use Random for now.
     Random random = new Random();
@@ -18,19 +32,26 @@ public class InAuth {
         return new Location(latitude, longitude);
     }
 
-    public void initialLoad() {
+    public boolean initialLoad() throws DataServiceException {
+        // generate a list of 10,000 random locations
+        List<Location> locations = new LinkedList<>();
         for (int i = 0; i < 10000; i++) {
             Location loc = randomLocation();
             if (loc.validate(loc))
-                System.out.println(loc.toString());
+                locations.add(loc);
             else
-                System.out.println("Invalid: " + loc.toString());
+                log.error("Invalid: " + loc.toString());
         }
+        // save
+        boolean result = locationDs.saveLocations(locations);
+        if (result)
+            log.info("Successfully saved 10,000 random locations");
+        return result;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DataServiceException {
         InAuth inAuth = new InAuth();
-        // inAuth.initialLoad();
+        inAuth.initialLoad();
         
         System.out.println(GeoDistanceSource.distance(32.9697, -96.80322, 29.46786, -98.53506, "M") + " Miles\n");
         System.out.println(GeoDistanceSource.distance(32.9697, -96.80322, 29.46786, -98.53506, "K") + " Kilometers\n");
