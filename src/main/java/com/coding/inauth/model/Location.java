@@ -23,6 +23,10 @@ public class Location {
         this.longitude = longitude;
     }
     
+    public Location() {
+        
+    }
+    
     public Location(float latitude, float longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
@@ -56,11 +60,7 @@ public class Location {
         if (getClass() != obj.getClass())
             return false;
         Location other = (Location) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
+
         if (Float.floatToIntBits(latitude) != Float.floatToIntBits(other.latitude))
             return false;
         if (Float.floatToIntBits(longitude) != Float.floatToIntBits(other.longitude))

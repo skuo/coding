@@ -55,4 +55,9 @@
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
     </bean>
     
+    <!-- data source -->
+    <bean id="locationDs" class="com.coding.inauth.service.data.spring.JdbcLocationDs">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
 </beans>
