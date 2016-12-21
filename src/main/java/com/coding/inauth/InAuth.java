@@ -1,5 +1,6 @@
 package com.coding.inauth;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -21,11 +22,24 @@ public class InAuth {
     LocationDs locationDs;
 
     // use Random for now.
-    Random random = new Random();
+    private Random random = new Random();
+    
+    // locations for target cities
+    private Location tokyo = new Location(35.6895f, 139.6917f);
+    private Location sydney = new Location(-33.8688f, 151.2093f);
+    private Location riyadh = new Location(24.7136f, 46.6753f);
+    private Location zurich = new Location(47.3769f, 8.5417f);
+    private Location reykjavik = new Location(64.1265f, -21.8174f);
+    private Location mexicoCity = new Location(19.42847f, -99.12766f);
+    private Location lima = new Location(-11.93284f, -76.641271f);
+    
+    private double range = 500;
 
     private Location randomLocation() {
         // The latitude must be a number between -90 and 90 and the longitude
         // between -180 and 180.
+        // Latitude:  + (North), - (South)
+        // Longitude: + (East),  - (West)
         // random generates between 0.0 and 1.0
         float latitude = random.nextFloat() * 180f - 90f;
         float longitude = random.nextFloat() * 360f - 180f;
@@ -49,6 +63,35 @@ public class InAuth {
         return result;
     }
 
+    public String calc(Location loc1) {
+        StringBuilder sb = new StringBuilder(loc1.getLatitude() + "," + loc1.getLongitude() + ",");
+        // Determine whether the location is in USA
+        
+        // Loop through the 7 target cities
+        sb.append(inRangeInMiles(loc1, tokyo, range));
+        sb.append(inRangeInMiles(loc1, sydney, range));
+        sb.append(inRangeInMiles(loc1, riyadh, range));
+        sb.append(inRangeInMiles(loc1, zurich, range));
+        sb.append(inRangeInMiles(loc1, reykjavik, range));
+        sb.append(inRangeInMiles(loc1, mexicoCity, range));
+        sb.append(inRangeInMiles(loc1, lima, range));
+        return sb.toString();
+    }
+    
+    private String inRangeInMiles(Location loc1, Location targetLoc, double range) {
+        StringBuilder sb = new StringBuilder();
+        double dist = GeoDistanceSource.distance(loc1.getLatitude(), loc1.getLongitude(), targetLoc.getLatitude(),
+                targetLoc.getLongitude(), "M");
+        // is location in range
+        if (dist > range)
+            sb.append("N");
+        else
+            sb.append("Y");
+        // append dist
+        sb.append("," + String.format("%.0f", dist) + ",");
+        return sb.toString();
+    }
+    
     public static void main(String[] args) throws DataServiceException {
         InAuth inAuth = new InAuth();
         inAuth.initialLoad();
