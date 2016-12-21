@@ -2,6 +2,8 @@ package com.coding.inauth.test;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,6 +46,24 @@ public class InAuthController {
         }
         response.setHeader("Approved", "true");
         return location;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/inauth/locations", headers = "accept=application/json")
+    @ResponseBody
+    public List<Location> getLocations(HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        log.info("getLocations: accept=" + request.getHeader("Content-Type")
+                + ", Authorization=" + request.getHeader("Authorization"));
+        List<Location> locations = new LinkedList<>();
+        try {
+            locations = locationDs.getLocations();
+        } catch (EmptyResultDataAccessException erdae) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+        response.setHeader("Approved", "true");
+        return locations;
     }
 
     @SuppressWarnings("unused")
