@@ -20,7 +20,7 @@
 	<!-- Normal Execution -->         
 	<!--==================-->
 
-    <context:property-placeholder location="file:///${PWD}/conf/in-auth.properties,file:///${PWD}/conf/in-auth-override.properties,file:///${PWD}/conf/in-auth-params.properties"/>
+    <context:property-placeholder location="file:///${PWD}/conf/in-auth.properties,file:///${PWD}/conf/in-auth-override.properties"/>
     
 	<!-- BoneCP configuration -->
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
