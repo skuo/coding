@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coding.db.BidDao;
 import com.coding.model.Bid;
-import com.coding.model.BidStatus;
+import com.coding.model.RestStatus;
 
 @Controller
 public class BidController {
@@ -91,13 +91,13 @@ public class BidController {
      * @throws SQLException
      *             return 500 status with error html page
      */
-    public BidStatus putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody Bid bid,
+    public RestStatus putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody Bid bid,
             HttpServletResponse response) throws SQLException {
         log.info("putBid: sourceId=" + sourceId + ", source=" + source + ", bid=" + bid.toString());
         bid.setSourceId(sourceId);
         bid.setSource(source);
-        BidStatus bidStatus = bidDao.put(bid);
-        if (bidStatus.getStatus().equals(BidStatus.FAILURE)) {
+        RestStatus bidStatus = bidDao.put(bid);
+        if (bidStatus.getStatus().equals(RestStatus.FAILURE)) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
         return bidStatus;

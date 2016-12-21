@@ -1,8 +1,14 @@
 package com.coding.inauth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Location {
+    @JsonIgnore
     private Long id;
+    @JsonProperty("latitude")
     private float latitude;
+    @JsonProperty("longitude")
     private float longitude;
     public Long getId() {
         return id;

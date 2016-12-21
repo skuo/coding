@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.coding.model.Bid;
-import com.coding.model.BidStatus;
+import com.coding.model.RestStatus;
 
 @Component
 public class BidDao {
@@ -64,7 +64,7 @@ public class BidDao {
     /**
      * Call insert() and if failed call update().
      */
-	public BidStatus put(Bid bid) throws SQLException {
+	public RestStatus put(Bid bid) throws SQLException {
 	    if (get(bid.getSourceId(), bid.getSource()) == null)
 	        return insert(bid);
 	    else 
@@ -75,10 +75,10 @@ public class BidDao {
      * Insert bid.
      * Release connection back to pool but close statement.
      */
-	public BidStatus insert(Bid bid){
+	public RestStatus insert(Bid bid){
         Connection c = null;
         PreparedStatement s = null;
-        BidStatus bidStatus = new BidStatus(BidStatus.SUCCESS, "");
+        RestStatus bidStatus = new RestStatus(RestStatus.SUCCESS, "");
         try {
             c = dataSource.getConnection();
             if (c != null) {
@@ -89,15 +89,15 @@ public class BidDao {
                 s.setTimestamp(4, bid.getUpdatedAtTimestamp());
                 int i = s.executeUpdate();
                 if (i == 0) {
-                    bidStatus.setStatus(BidStatus.FAILURE);
+                    bidStatus.setStatus(RestStatus.FAILURE);
                     bidStatus.setMessage(INSERT_NONE_ERROR);                    
                 }
             }
         } catch (SQLException sqle) {
-            bidStatus.setStatus(BidStatus.FAILURE);
+            bidStatus.setStatus(RestStatus.FAILURE);
             bidStatus.setMessage(INSERT_ERROR);
         } catch (ParseException pe) {
-            bidStatus.setStatus(BidStatus.FAILURE);
+            bidStatus.setStatus(RestStatus.FAILURE);
             bidStatus.setMessage(INSERT_ERROR);
         } finally {
             close(c);
@@ -110,10 +110,10 @@ public class BidDao {
      * Update bid.
      * Release connection back to pool but close statement.
      */
-    public BidStatus update(Bid bid){
+    public RestStatus update(Bid bid){
         Connection c = null;
         PreparedStatement s = null;
-        BidStatus bidStatus = new BidStatus(BidStatus.SUCCESS, "");
+        RestStatus bidStatus = new RestStatus(RestStatus.SUCCESS, "");
         try {
             c = dataSource.getConnection();
             if (c != null) {
@@ -124,15 +124,15 @@ public class BidDao {
                 s.setString(4, bid.getSource());
                 int i = s.executeUpdate();
                 if (i == 0) {
-                    bidStatus.setStatus(BidStatus.FAILURE);
+                    bidStatus.setStatus(RestStatus.FAILURE);
                     bidStatus.setMessage(UPDATE_NONE_ERROR);                    
                 }
             }
         } catch (SQLException sqle) {
-            bidStatus.setStatus(BidStatus.FAILURE);
+            bidStatus.setStatus(RestStatus.FAILURE);
             bidStatus.setMessage(UPDATE_ERROR);
         } catch (ParseException pe) {
-            bidStatus.setStatus(BidStatus.FAILURE);
+            bidStatus.setStatus(RestStatus.FAILURE);
             bidStatus.setMessage(UPDATE_ERROR);
         } finally {
             close(c);

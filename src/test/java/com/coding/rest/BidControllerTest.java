@@ -18,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.coding.model.Bid;
-import com.coding.model.BidStatus;
+import com.coding.model.RestStatus;
 import com.coding.rest.BidController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,15 +39,15 @@ public class BidControllerTest {
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         // insert a bid
-        BidStatus bidStatus = bidController.putBid(sourceId, source, bid, response);
-        assertEquals(BidStatus.SUCCESS,bidStatus.getStatus());
+        RestStatus bidStatus = bidController.putBid(sourceId, source, bid, response);
+        assertEquals(RestStatus.SUCCESS,bidStatus.getStatus());
         // get the inserted bid
         Bid bid2 = bidController.getBid(sourceId, source, request, response);
         assertEquals(bid, bid2);
         // update bid
         bid.setBid(2.3456f);
         bidStatus = bidController.putBid(sourceId, source, bid, response);
-        assertEquals(BidStatus.SUCCESS,bidStatus.getStatus());
+        assertEquals(RestStatus.SUCCESS,bidStatus.getStatus());
         // get updated bid
         bid2 = bidController.getBid(sourceId, source, request, response);
         assertEquals(bid, bid2);        

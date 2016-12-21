@@ -14,12 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coding.inauth.model.Location;
 import com.coding.inauth.service.data.LocationDs;
+import com.coding.model.RestStatus;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class InAuthController {
@@ -36,11 +42,9 @@ public class InAuthController {
                 + ", Authorization=" + request.getHeader("Authorization"));
         Location location = null;
         try {
-            location = locationDs.find(latitude, longitude);
+            location = getLocation(latitude, longitude);
             if (location == null)
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        } catch (EmptyResultDataAccessException erdae) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
@@ -48,6 +52,16 @@ public class InAuthController {
         return location;
     }
 
+    private Location getLocation(float latitude, float longitude) {
+        Location location = null;
+        try {
+            location = locationDs.find(latitude, longitude);
+        } catch (EmptyResultDataAccessException erdae) {
+            // do nothing.  location = null;
+        }        
+        return location;
+    }
+    
     @RequestMapping(method = RequestMethod.GET, value = "/inauth/locations", headers = "accept=application/json")
     @ResponseBody
     public List<Location> getLocations(HttpServletRequest request,
@@ -64,6 +78,34 @@ public class InAuthController {
         }
         response.setHeader("Approved", "true");
         return locations;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/inauth/location", headers = "accept=application/json")
+    @ResponseBody
+    public RestStatus addData(HttpServletRequest request, HttpServletResponse response, @RequestBody String body)
+            throws Exception {
+        log.info(body);
+
+        // convert JSON to Location
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        JsonParser jsonParser = mapper.getFactory().createParser(body);
+        Location location = mapper.readValue(jsonParser, new TypeReference<Location>() {});
+        log.info(location);
+        
+        RestStatus restStatus = new RestStatus(RestStatus.SUCCESS, "");
+        // check to see if location exists in db
+        Location dbLoc = getLocation(location.getLatitude(), location.getLongitude());
+        if (dbLoc == null) {
+            // save to db
+            boolean result = locationDs.saveLocation(location);
+            if (!result) {
+                restStatus.setStatus(RestStatus.FAILURE);
+                restStatus.setMessage("Insertion Failed");
+            }
+        }
+
+        return restStatus;
     }
 
     @SuppressWarnings("unused")

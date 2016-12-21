@@ -1,13 +1,13 @@
 package com.coding.model;
 
-public class BidStatus {
+public class RestStatus {
     public static final String SUCCESS = "success";
     public static final String FAILURE = "failure";
     
     private String status;
     private String message;
 
-    public BidStatus(String status, String message) {
+    public RestStatus(String status, String message) {
         this.status = status;
         this.message = message;
     }
