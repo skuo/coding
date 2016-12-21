@@ -1,4 +1,4 @@
-package com.inauth.model;
+package com.coding.model;
 
 import java.sql.Timestamp;
 import java.text.ParseException;

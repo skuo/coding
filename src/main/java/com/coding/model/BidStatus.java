@@ -1,4 +1,4 @@
-package com.inauth.model;
+package com.coding.model;
 
 public class BidStatus {
     public static final String SUCCESS = "success";

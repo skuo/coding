@@ -1,4 +1,4 @@
-package com.inauth.rest;
+package com.coding.rest;
 
 import java.sql.Timestamp;
 

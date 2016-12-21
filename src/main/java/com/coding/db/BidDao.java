@@ -1,4 +1,4 @@
-package com.inauth.db;
+package com.coding.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,8 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inauth.model.Bid;
-import com.inauth.model.BidStatus;
+import com.coding.model.Bid;
+import com.coding.model.BidStatus;
 
 @Component
 public class BidDao {

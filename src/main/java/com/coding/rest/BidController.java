@@ -1,4 +1,4 @@
-package com.inauth.rest;
+package com.coding.rest;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.inauth.db.BidDao;
-import com.inauth.model.Bid;
-import com.inauth.model.BidStatus;
+import com.coding.db.BidDao;
+import com.coding.model.Bid;
+import com.coding.model.BidStatus;
 
 @Controller
 public class BidController {
