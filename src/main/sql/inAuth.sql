@@ -1,3 +1,5 @@
+-- username=coding, password=coding
+
 CREATE DATABASE if NOT EXISTS `inauth` DEFAULT CHARACTER SET = utf8mb4;
 
 CREATE TABLE `location` (
@@ -8,9 +10,10 @@ CREATE TABLE `location` (
   INDEX `lat_long` (`latitude`,`longitude`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-insert into location (latitude, longitude) values(1.1, 2.20000);
-insert into location (latitude, longitude) values(2.2, 134.07378);
-insert into location (latitude, longitude) values(34.0522, -118.2437);
-insert into location (latitude, longitude) values(37.7749, -122.4194);
-insert into location (latitude, longitude) values(32.7157, -117.1611);
+-- initial inserts before loading 10,000 random locations
+--insert into location (latitude, longitude) values(1.1, 2.20000);
+--insert into location (latitude, longitude) values(2.2, 134.07378);
+--insert into location (latitude, longitude) values(34.0522, -118.2437);
+--insert into location (latitude, longitude) values(37.7749, -122.4194);
+--insert into location (latitude, longitude) values(32.7157, -117.1611);
 
