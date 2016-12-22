@@ -1,4 +1,5 @@
 -- username=coding, password=coding
+-- mysql is used
 
 CREATE DATABASE if NOT EXISTS `inauth` DEFAULT CHARACTER SET = utf8mb4;
 
