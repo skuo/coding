@@ -35,9 +35,6 @@ def host_type():
 
 # ---------------------------------------------------------------
 
-
-# fab build_and_debug:1.0.0-SNAPSHOT-local
-# fab build_and_debug:version=1.0.0-SNAPSHOT-local,password=password
 @task
 def build_and_debug():
     with settings(warn_only=True):
@@ -61,7 +58,6 @@ def build_skip_tests_and_debug():
         local("./target/in-auth-%s/bin/stopInAuth.sh" % VERSION)
         local("mvn clean install -DskipTests -P local")
         local("cd target; tar -zxvf in-auth-%s.tar.gz" % VERSION)
-        replace_properties()
         #
         local("cd target/in-auth-%s; ./bin/debugInAuth.sh" % VERSION)
         print "\nwait 3 seconds before tailing\n"
@@ -77,7 +73,6 @@ def build_and_start():
         local("./target/in-auth-%s/bin/stopInAuth.sh" % VERSION)
         local("mvn clean install -P local")
         local("cd target; tar -zxvf in-auth-%s.tar.gz" % VERSION)
-        replace_properties()
         #
         local("cd target/in-auth-%s; ./bin/startInAuth.sh" % VERSION)
         print "\nwait 3 seconds before tailing\n"
