@@ -1,19 +1,26 @@
 package com.coding.inauth;
 
-import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 
 import com.coding.inauth.model.Location;
 
+/**
+ * Only handle continental US, Alaska and Hawaii
+ * @author skuo
+ *
+ */
 public class Region {
 
     private static Path2D continentialUsaBoundary;
     private static Area continentalUsa;
-    
+    private static Path2D alaskaBoundary;
+    private static Area alaska;
+    private static Path2D hawaiiBoundary;
+    private static Area hawaii;    
     
     static {
-        // define usaBoundary by a series of (latitude,longitude)
+        // define continentialUsaBoundary by a series of (latitude,longitude)
         continentialUsaBoundary = new Path2D.Double();
         continentialUsaBoundary.moveTo(44.7742,-67.0262);
         continentialUsaBoundary.lineTo(47.2195, -68.0273);
@@ -59,10 +66,73 @@ public class Region {
         continentialUsaBoundary.lineTo(44.7935,-66.8957);
         continentialUsaBoundary.lineTo(44.7742,-67.0262);
         continentalUsa = new Area(continentialUsaBoundary);
+
+        // define alaskaBoundary by a series of (latitude,longitude)
+        alaskaBoundary = new Path2D.Double();
+        alaskaBoundary.moveTo(54.7256,-130.6054);
+        alaskaBoundary.lineTo(59.7120,-135.3515);
+        alaskaBoundary.lineTo(58.95,-137.6367);
+        alaskaBoundary.lineTo(60.4138,-139.0429);
+        alaskaBoundary.lineTo(60.2398,-140.9765);
+        alaskaBoundary.lineTo(69.6265,-141.0644);
+        alaskaBoundary.lineTo(71.3007,-156.7089);
+        alaskaBoundary.lineTo(68.8476,-166.289);
+        alaskaBoundary.lineTo(68.3343,-166.5966);
+        alaskaBoundary.lineTo(67.1187,-163.7841);
+        alaskaBoundary.lineTo(66.1782,-161.6967);
+        alaskaBoundary.lineTo(66.0737,-163.7127);
+        alaskaBoundary.lineTo(66.5963,-163.9599);
+        alaskaBoundary.lineTo(66.2668,-166.0913);
+        alaskaBoundary.lineTo(65.622,-168.2226);
+        alaskaBoundary.lineTo(65.1553,-166.9702);
+        alaskaBoundary.lineTo(64.5956,-166.3549);
+        alaskaBoundary.lineTo(64.2063,-161.1035);
+        alaskaBoundary.lineTo(63.2731,-164.3554);
+        alaskaBoundary.lineTo(61.4387,-166.1132);
+        alaskaBoundary.lineTo(58.6312,-161.8945);
+        alaskaBoundary.lineTo(58.2632,-157.4121);
+        alaskaBoundary.lineTo(54.6229,-164.7949);
+        alaskaBoundary.lineTo(57.0885,-153.1054);
+        alaskaBoundary.lineTo(59.933,-149.7656);
+        alaskaBoundary.lineTo(60.0209,-144.0527);
+        alaskaBoundary.lineTo(55.8259,-134.7363);
+        alaskaBoundary.lineTo(54.7256,-130.6054);
+        alaska = new Area(alaskaBoundary);
+
+        // define hawaiiBoundary by a series of (latitude,longitude)
+        hawaiiBoundary = new Path2D.Double();
+        hawaiiBoundary.moveTo(21.7799f,-160.2246f);
+        hawaiiBoundary.lineTo(21.8513f,-159.45f);
+        hawaiiBoundary.lineTo(21.2842f,-158.1152f);
+        hawaiiBoundary.lineTo(21.0742f,-157.3132f);
+        hawaiiBoundary.lineTo(20.7252,-156.9781);
+        hawaiiBoundary.lineTo(19.7253,-156.0937);
+        hawaiiBoundary.lineTo(19.0932,-155.9179);
+        hawaiiBoundary.lineTo(18.8958,-155.6762);
+        hawaiiBoundary.lineTo(19.508,-154.7973);
+        hawaiiBoundary.lineTo(19.8545,-155.083);
+        hawaiiBoundary.lineTo(20.7715,-155.9564);
+        hawaiiBoundary.lineTo(20.9357,-156.2585);
+        hawaiiBoundary.lineTo(21.1511,-156.7089);
+        hawaiiBoundary.lineTo(21.4581,-157.6702);
+        hawaiiBoundary.lineTo(21.7135,-157.9669);
+        hawaiiBoundary.lineTo(22.1467,-159.2866);
+        hawaiiBoundary.lineTo(22.2395,-159.402);
+        hawaiiBoundary.lineTo(22.2331,-159.5819);
+        hawaiiBoundary.lineTo(22.1428,-159.7315);
+        hawaiiBoundary.lineTo(21.7799f, -160.2246f);
+        hawaii = new Area(hawaiiBoundary);
     }
     
     public static boolean inUSA(Location location) {
-        return continentalUsa.contains(location.getLatitude(), location.getLongitude());
+        if (continentalUsa.contains(location.getLatitude(), location.getLongitude()))
+            return true;
+        else if (alaska.contains(location.getLatitude(), location.getLongitude()))
+            return true;
+        else if (hawaii.contains(location.getLatitude(), location.getLongitude()))
+            return true;
+        else
+            return false;
     }
     
 }

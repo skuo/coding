@@ -23,5 +23,9 @@ public class RegionTest {
         assertTrue(Region.inUSA(miami));
         Location nassau = new Location(25.0656f, -77.3547f);
         assertFalse(Region.inUSA(nassau));
+        Location anchorage = new Location(61.2279f,-149.9414f);
+        assertTrue(Region.inUSA(anchorage));
+        Location honolulu = new Location(21.3066f,-157.8549f);
+        assertTrue(Region.inUSA(honolulu));
     }
 }
