@@ -26,6 +26,25 @@ Initial Data Load and Calculation Endpoints
 
 The initial load endpoint is to load 10,000 random locations into the database.  Its form is `POST http://localhost:8080/coding/inauth/initialLoad` with empty body.  
 
-The calculation endpoint reads all the data from db and calculate the answers to the three questions for each location.  
-The result is written in file *inAuthSolution.sql*.
+I was asked to create a Java solution to answer three questions for all the data in DB.  I decide to create the calculation endpoint as
+it is easy to both develop and test the solution in a web app.   
+The result is written into file *inAuthSolution.sql*.  Its form is `POST http://localhost:8080/coding/inauth/calcAllLocations` with empty body.
+
+Build and Run
+-------------
+
+### Manual
+
+```bash
+mvn clean install -P local
+cd target
+tar -zxvf in-auth-0.0.1-local.tar.gz 
+cd in-auth-0.0.1-local
+./bin/startInAuth.sh (./bin/debugInAuth.sh) 
+```
+
+### fabric
+```bash
+fab build_and_start (or build_and_debug)
+```
 
