@@ -33,6 +33,8 @@ The result is written into file *inAuthSolution.sql*.  Its form is `POST http://
 Build and Run
 -------------
 
+The project is set up to compile, build, package, deploy and start a Java process with an embedded jetty server.
+
 ### Manual
 
 ```bash
