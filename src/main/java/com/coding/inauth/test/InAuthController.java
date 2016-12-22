@@ -133,8 +133,8 @@ public class InAuthController {
             throws Exception {
         
         RestStatus restStatus = new RestStatus(RestStatus.SUCCESS, "");
-        List<Location> locations = new LinkedList<>();
-        locations = locationDs.getLocations();
+        // call the method used in REST endpoint
+        List<Location> locations = getLocations(request, response);
         inAuth.calcAllLocations(locations);
         return restStatus;
     }
