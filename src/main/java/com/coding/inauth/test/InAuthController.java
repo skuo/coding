@@ -126,6 +126,19 @@ public class InAuthController {
 
         return restStatus;
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/inauth/calcAllLocations", headers = "accept=application/json")
+    @ResponseBody
+    public RestStatus calcAllLocations(HttpServletRequest request, HttpServletResponse response, @RequestBody String body)
+            throws Exception {
+        
+        RestStatus restStatus = new RestStatus(RestStatus.SUCCESS, "");
+        List<Location> locations = new LinkedList<>();
+        locations = locationDs.getLocations();
+        inAuth.calcAllLocations(locations);
+        return restStatus;
+    }
+
     @SuppressWarnings("unused")
     private void printHeader(HttpServletRequest request) {
         Enumeration<String> names = request.getHeaderNames();

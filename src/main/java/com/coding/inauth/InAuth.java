@@ -1,6 +1,8 @@
 package com.coding.inauth;
 
-import java.text.DecimalFormat;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -18,6 +20,14 @@ import com.coding.inauth.service.data.LocationDs;
 public class InAuth {
     private static final Log log = LogFactory.getLog(InAuth.class);
 
+    public static String HEADER = "latitude,longitude,"
+            + "Tokyo In Range, Tokyo Distance,"
+            + "Sydney In Range, Sydney Distance,"
+            + "Riyadh In Range, Riyadh Distance,"
+            + "Zurich In Range, Zurich Distance,"
+            + "Reykjavik In Range, Reykjavik Distance,"
+            + "Mexico City In Range, Mexico City Distance,"
+            + "Lima In Range, Lima Distance,";
     @Autowired
     LocationDs locationDs;
 
@@ -34,6 +44,7 @@ public class InAuth {
     private Location lima = new Location(-11.93284f, -76.641271f);
     
     private double range = 500;
+    private String outCsvFile = "inAuthSolution.csv";
 
     private Location randomLocation() {
         // The latitude must be a number between -90 and 90 and the longitude
@@ -63,6 +74,20 @@ public class InAuth {
         return result;
     }
 
+    public void calcAllLocations(Collection<Location> locations) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(outCsvFile))) {
+            // Write header
+            bw.write(HEADER + "\n");
+            // loop and write the solution
+            for (Location loc : locations) {
+                String line = calc(loc);
+                bw.write(line + "\n");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+    
     public String calc(Location loc1) {
         StringBuilder sb = new StringBuilder(loc1.getLatitude() + "," + loc1.getLongitude() + ",");
         // Determine whether the location is in USA
