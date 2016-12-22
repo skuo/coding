@@ -20,7 +20,7 @@ import com.coding.inauth.service.data.LocationDs;
 public class InAuth {
     private static final Log log = LogFactory.getLog(InAuth.class);
 
-    public static String HEADER = "latitude,longitude,"
+    public static String HEADER = "latitude,longitude,In USA,"
             + "Tokyo In Range, Tokyo Distance,"
             + "Sydney In Range, Sydney Distance,"
             + "Riyadh In Range, Riyadh Distance,"
@@ -91,7 +91,10 @@ public class InAuth {
     public String calc(Location loc1) {
         StringBuilder sb = new StringBuilder(loc1.getLatitude() + "," + loc1.getLongitude() + ",");
         // Determine whether the location is in USA
-        
+        if (Region.inUSA(loc1))
+            sb.append("Y,");
+        else
+            sb.append("N,");
         // Loop through the 7 target cities
         sb.append(inRangeInMiles(loc1, tokyo, range));
         sb.append(inRangeInMiles(loc1, sydney, range));
