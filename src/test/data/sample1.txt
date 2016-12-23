@@ -1,0 +1,6 @@
+abbc
+abbbc
+abc
+xyz
+abcd
+abbcc
