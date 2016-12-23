@@ -46,14 +46,7 @@ public class RegexTextReplacementInFiles {
             while ((line = br.readLine()) != null) {
                 // find match
                 Matcher m = pattern.matcher(line);
-                /*
-                while(m.find()) {
-                    System.out.print("[" + m.group() + "]");
-                }
-                System.out.println();
-                */
                 String replacedLine = m.replaceAll(replacement);
-                //System.out.println(replacedLine);
                 // replace
                 bw.write(replacedLine + "\n");
             }
@@ -85,6 +78,11 @@ public class RegexTextReplacementInFiles {
         // regexPattern must be legal
         try {
             pattern = Pattern.compile(regexPattern);
+            Matcher m = pattern.matcher("test");
+            if (m.groupCount() != 1) {
+                System.out.println("number of groups is not 1, it is " + m.groupCount());
+                System.exit(1);
+            }
         } catch (PatternSyntaxException pse) {
             System.err.println("Regex syntax error: " + pse.getMessage());
             System.exit(1);
