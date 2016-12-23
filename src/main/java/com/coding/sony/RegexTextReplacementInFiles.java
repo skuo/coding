@@ -1,8 +1,17 @@
 package com.coding.sony;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class RegexTextReplacementInFiles {
+
+    public static Pattern pattern = null;
     
     public static void process(String startingDir, String regexPattern, String replacement, String fileAcceptPattern) {
         File file = new File(startingDir);
@@ -22,12 +31,35 @@ public class RegexTextReplacementInFiles {
     
     private static void replace (File file, String regexPattern, String replacement, String fileAcceptPattern) {
         // need to see if file matches fileAcceptPattern
-        System.out.print("checking " + file + ": ");
         String filename = file.getName();
-        if (null == fileAcceptPattern || filename.matches(fileAcceptPattern))
-            System.out.println("replacing " + file);
-        else
-            System.out.println();
+        if (null != fileAcceptPattern && !filename.matches(fileAcceptPattern)) {
+            System.out.println("skipping " + file);
+            return;
+        }
+        
+        // open an output file, read each line, replace and write
+        String outFilename = file + ".processed";
+        System.out.println("replacing " + file + ", write to " + outFilename);
+        try (BufferedReader br = new BufferedReader(new FileReader(file));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(outFilename))) {
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                // find match
+                Matcher m = pattern.matcher(line);
+                /*
+                while(m.find()) {
+                    System.out.print("[" + m.group() + "]");
+                }
+                System.out.println();
+                */
+                String replacedLine = m.replaceAll(replacement);
+                //System.out.println(replacedLine);
+                // replace
+                bw.write(replacedLine + "\n");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     public static void main(String[] args) {
@@ -49,6 +81,15 @@ public class RegexTextReplacementInFiles {
             fileAcceptPattern = fileAcceptPattern.replace("*", ".*");
             fileAcceptPattern = fileAcceptPattern.replace("?", ".?");
         }
+        
+        // regexPattern must be legal
+        try {
+            pattern = Pattern.compile(regexPattern);
+        } catch (PatternSyntaxException pse) {
+            System.err.println("Regex syntax error: " + pse.getMessage());
+            System.exit(1);
+        }
+        
         if (startingDir != null) {
             process(startingDir, regexPattern, replacement, fileAcceptPattern);
         } else {
@@ -56,3 +97,4 @@ public class RegexTextReplacementInFiles {
         }
     }
 }
+
