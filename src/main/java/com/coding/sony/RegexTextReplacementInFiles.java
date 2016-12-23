@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -12,10 +14,20 @@ import java.util.regex.PatternSyntaxException;
 public class RegexTextReplacementInFiles {
 
     public static Pattern pattern = null;
+    public static Map<String,Integer> replacementCount = new HashMap<>();
+    public static int numFileProcessed = 0;
+    public static int totalReplacements = 0;
     
     public static void process(String startingDir, String regexPattern, String replacement, String fileAcceptPattern) {
         File file = new File(startingDir);
         walkAndProcess(file, regexPattern, replacement, fileAcceptPattern);
+        
+        // print output
+        System.out.println("Processed " + numFileProcessed + " files.  Repalced to \"" + replacement + "\"");
+        for (Map.Entry<String,Integer> entry : replacementCount.entrySet()) {
+            System.out.println("* " + entry.getKey() + " : " + entry.getValue() + " occurances");
+        }
+        System.out.println("totalReplacements=" + totalReplacements);
     }
 
     private static void walkAndProcess(File file, String regexPattern, String replacement, String fileAcceptPattern) {
@@ -37,6 +49,7 @@ public class RegexTextReplacementInFiles {
             return;
         }
         
+        numFileProcessed++;
         // open an output file, read each line, replace and write
         String outFilename = file + ".processed";
         System.out.println("replacing " + file + ", write to " + outFilename);
@@ -46,6 +59,13 @@ public class RegexTextReplacementInFiles {
             while ((line = br.readLine()) != null) {
                 // find match
                 Matcher m = pattern.matcher(line);
+                while(m.find()) {
+                    String matchedString = m.group();
+                    replacementCount.compute(matchedString, 
+                            (k,v) -> v == null ? 1 : v+1
+                            );
+                    totalReplacements++;
+                }
                 String replacedLine = m.replaceAll(replacement);
                 // replace
                 bw.write(replacedLine + "\n");
