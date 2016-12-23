@@ -31,13 +31,15 @@ public class RegexTextReplacementInFiles {
     }
 
     private static void walkAndProcess(File file, String regexPattern, String replacement, String fileAcceptPattern) {
-        if (file.isDirectory()) {
+        if (!file.exists())
+            return;
+        else if (file.isDirectory()) {
             // list the files and call walkAndProcess recursively
             File[] list = file.listFiles();
             for (File f : list)
                 walkAndProcess(f, regexPattern, replacement, fileAcceptPattern);
         }
-        else 
+        else if (file.isFile())
             replace(file, regexPattern, replacement, fileAcceptPattern);
     }
     
@@ -45,14 +47,14 @@ public class RegexTextReplacementInFiles {
         // need to see if file matches fileAcceptPattern
         String filename = file.getName();
         if (null != fileAcceptPattern && !filename.matches(fileAcceptPattern)) {
-            System.out.println("skipping " + file);
+            //System.out.println("skipping " + file);
             return;
         }
         
         numFileProcessed++;
         // open an output file, read each line, replace and write
         String outFilename = file + ".processed";
-        System.out.println("replacing " + file + ", write to " + outFilename);
+        //System.out.println("replacing " + file + ", write to " + outFilename);
         try (BufferedReader br = new BufferedReader(new FileReader(file));
                 BufferedWriter bw = new BufferedWriter(new FileWriter(outFilename))) {
             String line = null;
