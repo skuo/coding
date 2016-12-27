@@ -24,10 +24,10 @@
     
 	<!-- BoneCP configuration -->
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-		<property name="driverClass" value="${royalty-web.db.driverClassName}" />
-		<property name="jdbcUrl" value="${royalty-web.db.url}" />
-		<property name="username" value="${royalty-web.db.username}" />
-		<property name="password" value="${royalty-web.db.password}" />
+		<property name="driverClass" value="${coding.db.driverClassName}" />
+		<property name="jdbcUrl" value="${coding.db.url}" />
+		<property name="username" value="${coding.db.username}" />
+		<property name="password" value="${coding.db.password}" />
 		<property name="idleConnectionTestPeriodInMinutes" value="60" />
 		<property name="idleMaxAgeInMinutes" value="60" />
 		<property name="maxConnectionsPerPartition" value="5" />

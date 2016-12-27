@@ -30,11 +30,11 @@ public class BidController {
     @Autowired
     BidDao bidDao;
 
-    @Value("${royalty-web.db.url}")
+    @Value("${coding.db.url}")
     private String dbUrl;
-    @Value("${royalty-web.db.username}")
+    @Value("${coding.db.username}")
     private String dbUsername;
-    @Value("${royalty-web.db.password}")
+    @Value("${coding.db.password}")
     private String dbPassword;
 
     @RequestMapping(method = RequestMethod.GET, value = "/version", headers = "accept=application/json")
@@ -43,7 +43,7 @@ public class BidController {
         // log.info("getVersion");
         StringBuilder sb = new StringBuilder();
         sb.append("{\"java.version\":\"" + System.getProperty("java.version") + "\"}");
-        // log.info(sb.toString());
+        log.info(sb.toString());
         return sb.toString();
     }
 
