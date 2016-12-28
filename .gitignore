@@ -12,6 +12,8 @@ target
 .idea
 .gradle
 
+**/*.processed
+
 /bin/
 /target/
 /build/
