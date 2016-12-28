@@ -6,4 +6,4 @@ fi
 echo "JAVA_HOME="$JAVA_HOME
 
 echo "Stopping in-auth "
-$JAVA_HOME/bin/java -jar lib/start-${jetty.version}.jar -DSTOP.PORT=8181 -DSTOP.KEY=inAuthWebStop --stop
+$JAVA_HOME/bin/java -jar lib/start-${jetty.version}.jar -DSTOP.PORT=8181 -DSTOP.KEY=codingWebStop --stop

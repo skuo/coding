@@ -342,7 +342,7 @@
   </repositories>
 
   <build>
-    <finalName>in-auth-${project.version}</finalName>
+    <finalName>coding-${project.version}</finalName>
     <plugins>
       <!-- compiler plugin -->
       <plugin>
@@ -362,7 +362,7 @@
         <configuration>
           <scanIntervalSeconds>10</scanIntervalSeconds>
           <webApp>
-            <contextPath>/in-auth</contextPath>
+            <contextPath>/coding</contextPath>
           </webApp>
           <downloadSources>true</downloadSources>
           <downloadJavadocs>true</downloadJavadocs>
@@ -374,14 +374,14 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
-            <id>in-auth.tar.gz</id>
+            <id>coding.tar.gz</id>
             <phase>package</phase>
             <configuration>
               <descriptors>
                 <descriptor>assembly.xml</descriptor>
               </descriptors>
               <outputDirectory>target</outputDirectory>
-              <finalName>in-auth-${project.version}</finalName>
+              <finalName>coding-${project.version}</finalName>
               <appendAssemblyId>true</appendAssemblyId>
             </configuration>
             <goals>

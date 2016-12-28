@@ -14,13 +14,13 @@
          
 
 	<!-- Include spring config common to both normal and test executions -->
-    <import resource="in-auth-common-spring.xml"/>
+    <import resource="coding-common-spring.xml"/>
          
 	<!--==================-->
 	<!-- Normal Execution -->         
 	<!--==================-->
 
-    <context:property-placeholder location="file:///${PWD}/conf/in-auth.properties,file:///${PWD}/conf/in-auth-override.properties"/>
+    <context:property-placeholder location="file:///${PWD}/conf/coding.properties,file:///${PWD}/conf/coding-override.properties"/>
     
 	<!-- BoneCP configuration -->
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">

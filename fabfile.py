@@ -43,14 +43,14 @@ def build_and_debug():
     with settings(warn_only=True):
         read_build_version()
         local("pwd")
-        local("./target/in-auth-%s/bin/stopInAuth.sh" % VERSION)
+        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
         local("mvn clean install -P local")
-        local("cd target; tar -zxvf in-auth-%s.tar.gz" % VERSION)
+        local("cd target; tar -zxvf coding-%s.tar.gz" % VERSION)
         #
-        local("cd target/in-auth-%s; ./bin/debugInAuth.sh" % VERSION)
+        local("cd target/coding-%s; ./bin/debugCoding.sh" % VERSION)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
-        local("tail -100f target/in-auth-%s/logs/*.stderrout.log" % VERSION)
+        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
 
 
 @task
@@ -58,15 +58,15 @@ def build_skip_tests_and_debug():
     with settings(warn_only=True):
         read_build_version()
         local("pwd")
-        local("./target/in-auth-%s/bin/stopInAuth.sh" % VERSION)
+        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
         local("mvn clean install -DskipTests -P local")
-        local("cd target; tar -zxvf in-auth-%s.tar.gz" % VERSION)
+        local("cd target; tar -zxvf coding-%s.tar.gz" % VERSION)
         replace_properties()
         #
-        local("cd target/in-auth-%s; ./bin/debugInAuth.sh" % VERSION)
+        local("cd target/coding-%s; ./bin/debugCoding.sh" % VERSION)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
-        local("tail -100f target/in-auth-%s/logs/*.stderrout.log" % VERSION)
+        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
 
 
 @task
@@ -74,15 +74,15 @@ def build_and_start():
     with settings(warn_only=True):
         read_build_version()
         local("pwd")
-        local("./target/in-auth-%s/bin/stopInAuth.sh" % VERSION)
+        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
         local("mvn clean install -P local")
-        local("cd target; tar -zxvf in-auth-%s.tar.gz" % VERSION)
+        local("cd target; tar -zxvf coding-%s.tar.gz" % VERSION)
         replace_properties()
         #
-        local("cd target/in-auth-%s; ./bin/startInAuth.sh" % VERSION)
+        local("cd target/coding-%s; ./bin/startCoding.sh" % VERSION)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
-        local("tail -100f target/in-auth-%s/logs/*.stderrout.log" % VERSION)
+        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
 
 
 @task
@@ -90,13 +90,13 @@ def restart_and_debug():
     with settings(warn_only=True):
         read_build_version()
         local("pwd")
-        local("./target/in-auth-%s/bin/stopInAuth.sh" % VERSION)
+        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
         print "\nwait 3 seconds before starting in debug mode\n"
         time.sleep(3)
-        local("cd target/in-auth-%s; ./bin/debugInAuth.sh" % VERSION)
+        local("cd target/coding-%s; ./bin/debugCoding.sh" % VERSION)
         print "\nwait 3 seconds before tailing\n"
         time.sleep(3)
-        local("tail -100f target/in-auth-%s/logs/*.stderrout.log" % VERSION)
+        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
 
 
 @task

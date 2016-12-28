@@ -22,7 +22,7 @@ import com.coding.model.BidStatus;
 import com.coding.rest.BidController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:./src/test/resources/in-auth-test-spring.xml"})
+@ContextConfiguration(locations={"file:./src/test/resources/coding-test-spring.xml"})
 public class BidControllerTest {
 
     @Autowired
