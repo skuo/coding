@@ -41,4 +41,11 @@ public class BidService {
             status = false;
         return status;
     }
+    
+    /**
+     * Delete all bids
+     */
+    public void deleteBids() {
+        bidRepository.deleteAll();
+    }
 }

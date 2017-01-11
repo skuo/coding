@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.coding.entity.Bid;
+import com.coding.repository.BidRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,14 +26,24 @@ import com.coding.entity.Bid;
 @AutoConfigureTestDatabase
 public class BidServiceTest {
     @Autowired
+    private BidRepository bidRepository;
+    
+    @Autowired
     private BidService bidService;
     
     @Before
     public void setup() throws ParseException{
     }   
     
+    @After
+    public void teardown() {
+        // remove all bids
+        bidRepository.deleteAll();
+        assertTrue(0L == bidRepository.count());
+    }
+    
     @Test
-    public void getAllMonthly() throws Exception{
+    public void testService() throws Exception{
         // first save Bids
         Bid bid1 = new Bid();
         bid1.setSourceId("sourceId");

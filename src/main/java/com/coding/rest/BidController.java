@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,13 +28,6 @@ public class BidController {
 
     @Autowired
     BidDao bidDao;
-
-    @Value("${coding.db.url}")
-    private String dbUrl;
-    @Value("${coding.db.username}")
-    private String dbUsername;
-    @Value("${coding.db.password}")
-    private String dbPassword;
 
     @RequestMapping(method = RequestMethod.GET, value = "/version", headers = "accept=application/json")
     @ResponseBody
