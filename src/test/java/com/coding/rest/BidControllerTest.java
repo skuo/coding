@@ -14,15 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.coding.model.Bid;
 import com.coding.model.BidStatus;
-import com.coding.rest.BidController;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"file:./src/test/resources/coding-test-spring.xml"})
+@RunWith(SpringRunner.class)
+@SpringBootTest//(webEnvironment=WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase
+
 public class BidControllerTest {
 
     @Autowired
