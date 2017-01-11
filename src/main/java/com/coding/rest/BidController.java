@@ -21,11 +21,7 @@ import com.coding.entity.Bid;
 import com.coding.model.BidStatus;
 import com.coding.service.BidService;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 @Controller
 public class BidController {
@@ -45,17 +41,6 @@ public class BidController {
     }
 
     @ApiOperation(value = "getBid", nickname = "getBid")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "sourceId", value = "Source Id", required = false, dataType = "string", paramType = "query", defaultValue = "sourceId"), 
-            @ApiImplicitParam(name = "source", value = "Source", required = false, dataType = "string", paramType = "query", defaultValue = "wp") 
-            })
-    @ApiResponses(value={
-            @ApiResponse(code=200, message="Success", response=Bid.class),
-            @ApiResponse(code=401, message="Unauthorized"),
-            @ApiResponse(code=403, message="Forbidden"),
-            @ApiResponse(code=404, message="Not Found"),
-            @ApiResponse(code=500, message="Failure")
-    })    
     @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}/source/{source}", headers = "accept=application/json")
     @ResponseBody
     /**
@@ -84,17 +69,6 @@ public class BidController {
     }
 
     @ApiOperation(value = "putBid", nickname = "putBid")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "sourceId", value = "Source Id", required = false, dataType = "string", paramType = "query", defaultValue = "sourceId"), 
-            @ApiImplicitParam(name = "source", value = "Source", required = false, dataType = "string", paramType = "query", defaultValue = "wp") 
-            })
-    @ApiResponses(value={
-            @ApiResponse(code=200, message="Success", response=BidStatus.class),
-            @ApiResponse(code=401, message="Unauthorized"),
-            @ApiResponse(code=403, message="Forbidden"),
-            @ApiResponse(code=404, message="Not Found"),
-            @ApiResponse(code=500, message="Failure")
-    })    
     @RequestMapping(method = RequestMethod.PUT, value = "/bids/{sourceId}/source/{source}", headers = "accept=application/json")
     @ResponseBody
     /**

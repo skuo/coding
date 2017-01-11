@@ -51,7 +51,7 @@ fab build_and_debug # debug port at 4000, tomcat listens at 8080
 Swagger-SpringMvc
 -----------
 ```bash
-http://localhost:8090/swagger-ui.html
+http://localhost:8080/coding/swagger-ui.html
 ```
 
 #Built in Spring Boot Endpoints

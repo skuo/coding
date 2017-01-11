@@ -35,7 +35,7 @@ public class CodingApplication {
         return new ApiInfoBuilder()
                 .title("Spring Boot REST API with Swagger")
                 .description("Spring Boot REST API with Swagger")
-                .termsOfServiceUrl("http://org.brest")
+                .termsOfServiceUrl("http://com.coding")
                 .contact("Steve Kuo")
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://githuh.com")
