@@ -40,6 +40,7 @@ java -jar ./build/libs/coding-0.0.1.jar --spring.profiles.active=dev --spring.da
 ```bash
 http://localhost:8080/coding/health
 
+http://localhost:8080/coding/actuator
 http://localhost:8080/coding/autoconfig
 http://localhost:8080/coding/beans
 http://localhost:8080/coding/configprops
