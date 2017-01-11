@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.coding.dto.BidStatus;
 import com.coding.entity.Bid;
-import com.coding.model.BidStatus;
 import com.coding.service.BidService;
 
 import io.swagger.annotations.ApiOperation;

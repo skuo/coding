@@ -22,8 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.coding.dto.BidStatus;
 import com.coding.entity.Bid;
-import com.coding.model.BidStatus;
 import com.coding.repository.BidRepository;
 
 @RunWith(SpringRunner.class)

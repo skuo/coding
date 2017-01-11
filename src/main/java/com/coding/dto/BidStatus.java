@@ -1,4 +1,4 @@
-package com.coding.model;
+package com.coding.dto;
 
 public class BidStatus {
     public static final String SUCCESS = "success";
