@@ -1,18 +1,19 @@
 Coding
 ===
 
-Build project with gradle
------
+#Build project with gradle
 ```bash
 ./gradlew build
 ```
 
-# debug app as jar
+Debug app as jar
+---
 ```bash
 java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=y -jar build/libs/coding-0.1.0.jar --spring.profiles.active=dev > console.log 2>&1 &
 ```
 
-#Run app as jar
+Run app as jar
+---
 ```bash
 java -jar ./build/libs/coding-{VERSION_NUMBER}.jar --spring.profiles.active=dev
 ```
@@ -22,7 +23,8 @@ java -jar ./build/libs/coding-0.0.1.jar --spring.profiles.active=dev
 or
 SPRING_APPLICATION_JSON='{"spring":{"profiles":{"active":"dev"}}}' java -jar ./build/libs/royalty-cargo-1.0.1-SNAPSHOT.jar
 
-# spring.profiles.active=secret and /data/application-secret.properties exist. 
+spring.profiles.active=secret and /data/application-secret.properties exist.
+--- 
 or # pass in env or property
 ENV="int" java -DENV -Dprop.env=prop.int -jar ./build/libs/coding-1.0.1.jar --spring.config.location=/data/ 
 ```
@@ -35,20 +37,24 @@ java -jar ./build/libs/coding-0.0.1.jar --spring.profiles.active=dev --spring.da
 ```
 
 Shutdown
------
+---
+```bash
 curl -X POST -u user:CodingBreak localhost:8080/coding/shutdown
+```
 
 Fabric
 -----------
+```bash
 fab build_and_debug # debug port at 4000, tomcat listens at 8080
+```
 
 Swagger-SpringMvc
 -----------
+```bash
 http://localhost:8090/swagger-ui.html
+```
 
-
-Built in Spring Boot Endpoints
--------------------------------
+#Built in Spring Boot Endpoints
 ```bash
 http://localhost:8080/coding/health
 
