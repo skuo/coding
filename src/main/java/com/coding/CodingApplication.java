@@ -22,7 +22,7 @@ public class CodingApplication {
     
     @Bean
     // Group all REST endpoint with '/bids' prefix in the same docket
-    public Docket payrollApi() {
+    public Docket bidsApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("bids")
                 .apiInfo(apiInfo())
@@ -30,7 +30,18 @@ public class CodingApplication {
                 .paths(regex("/bids.*"))
                 .build();
     }
-    
+
+    @Bean
+    // Group all REST endpoint with '/hola' prefix in the same docket
+    public Docket holaApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("hola")
+                .apiInfo(apiInfo())
+                .select()
+                .paths(regex("/hola.*"))
+                .build();
+    }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Spring Boot REST API with Swagger")
