@@ -42,6 +42,9 @@ Fabric
 -----------
 fab build_and_debug # debug port at 4000, tomcat listens at 8080
 
+Swagger-SpringMvc
+-----------
+http://localhost:8090/swagger-ui.html
 
 
 Built in Spring Boot Endpoints
