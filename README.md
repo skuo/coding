@@ -1,4 +1,5 @@
-# coding
+Coding
+===
 
 Build project with gradle
 -----
@@ -6,14 +7,12 @@ Build project with gradle
 ./gradlew build
 ```
 
-debug app as jar
----
+# debug app as jar
 ```bash
 java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=y -jar build/libs/coding-0.1.0.jar --spring.profiles.active=dev > console.log 2>&1 &
 ```
 
-Run app as jar
------
+#Run app as jar
 ```bash
 java -jar ./build/libs/coding-{VERSION_NUMBER}.jar --spring.profiles.active=dev
 ```
@@ -35,8 +34,18 @@ Override individual properties at run time:
 java -jar ./build/libs/coding-0.0.1.jar --spring.profiles.active=dev --spring.datasource.username= otherusername --spring.datasource.password= otherpassword --server.port=8888 --spring.config.location=location for override properties file
 ```
 
-# Built in Spring Boot Endpoints
+Shutdown
+-----
+curl -X POST -u user:CodingBreak localhost:8080/coding/shutdown
 
+Fabric
+-----------
+fab build_and_debug # debug port at 4000, tomcat listens at 8080
+
+
+
+Built in Spring Boot Endpoints
+-------------------------------
 ```bash
 http://localhost:8080/coding/health
 

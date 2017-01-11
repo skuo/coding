@@ -21,6 +21,12 @@ import com.coding.entity.Bid;
 import com.coding.model.BidStatus;
 import com.coding.service.BidService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @Controller
 public class BidController {
     private static final Log log = LogFactory.getLog(BidController.class);
@@ -38,6 +44,18 @@ public class BidController {
         return sb.toString();
     }
 
+    @ApiOperation(value = "getBid", nickname = "getBid")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sourceId", value = "Source Id", required = false, dataType = "string", paramType = "query", defaultValue = "sourceId"), 
+            @ApiImplicitParam(name = "source", value = "Source", required = false, dataType = "string", paramType = "query", defaultValue = "wp") 
+            })
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="Success", response=Bid.class),
+            @ApiResponse(code=401, message="Unauthorized"),
+            @ApiResponse(code=403, message="Forbidden"),
+            @ApiResponse(code=404, message="Not Found"),
+            @ApiResponse(code=500, message="Failure")
+    })    
     @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}/source/{source}", headers = "accept=application/json")
     @ResponseBody
     /**
@@ -65,8 +83,19 @@ public class BidController {
         return bid;
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/bids/{sourceId}/source/{source}", 
-            headers = "accept=application/json")
+    @ApiOperation(value = "putBid", nickname = "putBid")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "sourceId", value = "Source Id", required = false, dataType = "string", paramType = "query", defaultValue = "sourceId"), 
+            @ApiImplicitParam(name = "source", value = "Source", required = false, dataType = "string", paramType = "query", defaultValue = "wp") 
+            })
+    @ApiResponses(value={
+            @ApiResponse(code=200, message="Success", response=BidStatus.class),
+            @ApiResponse(code=401, message="Unauthorized"),
+            @ApiResponse(code=403, message="Forbidden"),
+            @ApiResponse(code=404, message="Not Found"),
+            @ApiResponse(code=500, message="Failure")
+    })    
+    @RequestMapping(method = RequestMethod.PUT, value = "/bids/{sourceId}/source/{source}", headers = "accept=application/json")
     @ResponseBody
     /**
      * Put bid. Returns BidStatus with status code of 200 or 500.
@@ -95,8 +124,7 @@ public class BidController {
         return bidStatus;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json", 
-            produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json", produces = "application/json")
     @ResponseBody
     /**
      * Return bid in json format and status code of 200, 404 and 500.
