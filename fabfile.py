@@ -34,69 +34,35 @@ def host_type():
 
 # ---------------------------------------------------------------
 
-
-# fab build_and_debug:1.0.0-SNAPSHOT-local
-# fab build_and_debug:version=1.0.0-SNAPSHOT-local,password=password
-@task
-def build_and_debug():
-    with settings(warn_only=True):
-        read_build_version()
-        local("pwd")
-        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
-        local("mvn clean install -P local")
-        local("cd target; tar -zxvf coding-%s.tar.gz" % VERSION)
-        #
-        local("cd target/coding-%s; ./bin/debugCoding.sh" % VERSION)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
-
+VERSION="0.0.1"
 
 @task
-def build_skip_tests_and_debug():
+def build_and_debug(version=VERSION):
     with settings(warn_only=True):
-        read_build_version()
         local("pwd")
-        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
-        local("mvn clean install -DskipTests -P local")
-        local("cd target; tar -zxvf coding-%s.tar.gz" % VERSION)
-        replace_properties()
-        #
-        local("cd target/coding-%s; ./bin/debugCoding.sh" % VERSION)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
-
+        local("curl -X POST -u steve:kuo localhost:8090/coding/shutdown")
+        local("./gradlew clean build")
+        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/coding-%s.jar" % version)
+   
+@task
+def build_skip_tests_and_debug(version=VERSION):
+    with settings(warn_only=True):
+        print "\nTODO\n"
 
 @task
-def build_and_start():
+def build_and_start(version=VERSION):
     with settings(warn_only=True):
-        read_build_version()
         local("pwd")
-        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
-        local("mvn clean install -P local")
-        local("cd target; tar -zxvf coding-%s.tar.gz" % VERSION)
-        replace_properties()
-        #
-        local("cd target/coding-%s; ./bin/startCoding.sh" % VERSION)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
-
+        local("curl -X POST -u user:CodingBreak localhost:8080/coding/shutdown")
+        local("./gradlew clean build")
+        local("java -server -Xms1700M -Xmx1700M -jar build/libs/coding-%s.jar" % version)
 
 @task
-def restart_and_debug():
+def restart_and_debug(version=VERSION):
     with settings(warn_only=True):
-        read_build_version()
         local("pwd")
-        local("./target/coding-%s/bin/stopCoding.sh" % VERSION)
-        print "\nwait 3 seconds before starting in debug mode\n"
-        time.sleep(3)
-        local("cd target/coding-%s; ./bin/debugCoding.sh" % VERSION)
-        print "\nwait 3 seconds before tailing\n"
-        time.sleep(3)
-        local("tail -100f target/coding-%s/logs/*.stderrout.log" % VERSION)
-
+        local("curl -X POST -u user:CodingBreak localhost:8080/coding/shutdown")
+        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/coding-%s.jar" % version)
 
 @task
 def push_and_tag():
@@ -126,4 +92,3 @@ def read_build_version():
     root=xml.etree.ElementTree.parse("pom.xml").getroot()
     VERSION=root.find("{http://maven.apache.org/POM/4.0.0}version").text + "-local"
     print("VERSION=%s" % VERSION)
-

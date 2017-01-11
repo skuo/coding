@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '1.4.0.RELEASE'
+    springBootVersion = '1.4.3.RELEASE'
   }
   repositories {
     mavenCentral()
@@ -15,6 +15,10 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'docker'
+
+// defined the following so that /coding/info endpoint displays useful info
+group = 'com.coding'
+version = '0.0.1'
 
 jar {
   baseName = 'coding'
@@ -33,6 +37,10 @@ repositories {
   mavenCentral()
   //maven { url "http://jolbox.com/bonecp/downloads" }
 }
+
+springBoot {
+  buildInfo()
+}   
 
 dependencies {
   compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -55,8 +63,8 @@ dependencies {
 }
 
 // Set tag explicitly.  See README.md for more detail
-//ext.dockerGroup = 'com.maker'
-ext.dockerTag = '1.0.1'
+//ext.dockerGroup = 'com.coding'
+ext.dockerTag = '0.0.1'
 
 task buildDocker(type: Docker, dependsOn: build) {
   push = false

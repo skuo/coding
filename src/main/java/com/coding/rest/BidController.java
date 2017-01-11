@@ -65,7 +65,8 @@ public class BidController {
         return bid;
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/bids/{sourceId}/source/{source}", headers = "accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, value = "/bids/{sourceId}/source/{source}", 
+            headers = "accept=application/json")
     @ResponseBody
     /**
      * Put bid. Returns BidStatus with status code of 200 or 500.
@@ -94,7 +95,8 @@ public class BidController {
         return bidStatus;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json", produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json", 
+            produces = "application/json")
     @ResponseBody
     /**
      * Return bid in json format and status code of 200, 404 and 500.
