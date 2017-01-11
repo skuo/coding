@@ -69,6 +69,55 @@ public class Bid {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((bid == null) ? 0 : bid.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((source == null) ? 0 : source.hashCode());
+        result = prime * result + ((sourceId == null) ? 0 : sourceId.hashCode());
+        result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Bid other = (Bid) obj;
+        if (bid == null) {
+            if (other.bid != null)
+                return false;
+        } else if (bid.compareTo(other.bid) != 0)
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (source == null) {
+            if (other.source != null)
+                return false;
+        } else if (!source.equals(other.source))
+            return false;
+        if (sourceId == null) {
+            if (other.sourceId != null)
+                return false;
+        } else if (!sourceId.equals(other.sourceId))
+            return false;
+        if (updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!updatedAt.equals(other.updatedAt))
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "Bid [id=" + id + ", sourceId=" + sourceId + ", source=" + source + ", bid=" + bid + ", updatedAt="
                 + updatedAt + "]";

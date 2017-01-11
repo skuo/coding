@@ -23,7 +23,7 @@ public class BidService {
     * @return Bid in JSON format
     * @throws 
     */
-    public Bid getBid(String sourceId, String source) throws Exception{
+    public Bid getBid(String sourceId, String source) {
         
         Bid bid= bidRepository.get(sourceId, source);
         return bid;
@@ -34,7 +34,7 @@ public class BidService {
     * @return boolean
     * @throws 
     */
-    public boolean saveBid(Bid bid) throws Exception{
+    public boolean saveBid(Bid bid) {
         boolean status = true;
         Bid dbBid = bidRepository.save(bid);
         if (dbBid == null)

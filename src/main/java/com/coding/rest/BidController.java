@@ -2,7 +2,6 @@ package com.coding.rest;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,16 +17,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.coding.db.BidDao;
-import com.coding.model.Bid;
-import com.coding.model.BidStatus;
+import com.coding.entity.Bid;
+import com.coding.service.BidService;
 
 @Controller
 public class BidController {
     private static final Log log = LogFactory.getLog(BidController.class);
 
     @Autowired
-    BidDao bidDao;
+    BidService bidService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/version", headers = "accept=application/json")
     @ResponseBody
@@ -51,25 +49,17 @@ public class BidController {
      * @param response
      *            HttpServletReponse
      * @return Bid in json format
-     * @throws SQLException
-     *             returns 500 status with error html page
-     * @throws IOException
-     *             returns 500 status with error html page
      */
     public Bid getBid(@PathVariable String sourceId, @PathVariable String source, HttpServletRequest request,
-            HttpServletResponse response) throws IOException {
+            HttpServletResponse response) {
         log.info("getBid: sourceId=" + sourceId + ", source=" + source + ", accept=" + request.getHeader("Content-Type")
                 + ", Authorization=" + request.getHeader("Authorization"));
         Bid bid = null;
-        try {
-            bid = bidDao.get(sourceId, source);
-            if (bid == null)
-                // use setStatus() instead of sendError() because it allows
-                // ResponseBody to be written
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        } catch (SQLException sqle) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        bid = bidService.getBid(sourceId, source);
+        if (bid == null)
+            // use setStatus() instead of sendError() because it allows
+            // ResponseBody to be written
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         response.setHeader("Approved", "true");
         return bid;
     }
@@ -87,20 +77,18 @@ public class BidController {
      *            Bid
      * @param response
      *            HttpServletReponse
-     * @return BidStatus in json format
-     * @throws SQLException
-     *             return 500 status with error html page
+     * @return boolean
      */
-    public BidStatus putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody Bid bid,
+    public boolean putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody Bid bid,
             HttpServletResponse response) throws SQLException {
         log.info("putBid: sourceId=" + sourceId + ", source=" + source + ", bid=" + bid.toString());
         bid.setSourceId(sourceId);
         bid.setSource(source);
-        BidStatus bidStatus = bidDao.put(bid);
-        if (bidStatus.getStatus().equals(BidStatus.FAILURE)) {
+        boolean status = bidService.saveBid(bid);
+        if (!status) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        return bidStatus;
+        return status;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json")
@@ -125,25 +113,12 @@ public class BidController {
     public Bid getBidByPathAndParams(@PathVariable String sourceId, @RequestParam("source") String source,
             @RequestParam(value = "id", required = false) Long id, HttpServletResponse response) throws IOException {
         log.info("getBidByPathAndParams: sourceId=" + sourceId + ", source=" + source + ", id=" + id);
-        Bid bid = null;
-        try {
-            bid = bidDao.get(sourceId, source);
-            if (bid == null)
-                // use setStatus() instead of sendError() because it allows
-                // ResponseBody to be written
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        } catch (SQLException sqle) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        Bid bid = bidService.getBid(sourceId, source);
+        if (bid == null)
+            // use setStatus() instead of sendError() because it allows
+            // ResponseBody to be written
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return bid;
     }
 
-    @SuppressWarnings("unused")
-    private void printHeader(HttpServletRequest request) {
-        Enumeration<String> names = request.getHeaderNames();
-        while (names.hasMoreElements()) {
-            String header = names.nextElement();
-            log.info("\t" + header + "=" + request.getHeader(header));
-        }
-    }
 }
