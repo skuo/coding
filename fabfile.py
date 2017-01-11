@@ -65,6 +65,21 @@ def restart_and_debug(version=VERSION):
         local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/coding-%s.jar" % version)
 
 @task
+def build_and_startDocker(version=VERSION):
+    with settings(warn_only=True):
+        local("pwd")
+        local("./gradlew clean build")
+        local("./gradlew buildDocker")
+        startDocker()
+        
+@task
+def startDocker(version=VERSION):
+    with settings(warn_only=True):
+        local("pwd")
+        local("docker run -p:8080:8080 -v /data:/data -t --rm coding:%s --spring.profiles.active=dev" % version)
+    
+
+@task
 def push_and_tag():
     with settings(warn_only=True), hide('stderr'):
         # empty commit and then push
