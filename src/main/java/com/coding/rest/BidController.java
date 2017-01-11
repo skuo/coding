@@ -2,6 +2,8 @@ package com.coding.rest;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.coding.dto.BidDto;
 import com.coding.dto.BidStatus;
-import com.coding.entity.Bid;
 import com.coding.service.BidService;
 
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +46,7 @@ public class BidController {
     @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}/source/{source}", headers = "accept=application/json")
     @ResponseBody
     /**
-     * Return bid in json format and status code of 200, 404 and 500.
+     * Return a list of BidDto in json format and status code of 200, 404 and 500.
      * 
      * @param sourceId
      *            original source id
@@ -52,20 +54,15 @@ public class BidController {
      *            source identifier
      * @param response
      *            HttpServletReponse
-     * @return Bid in json format
+     * @return BidDtos in json format
      */
-    public Bid getBid(@PathVariable String sourceId, @PathVariable String source, HttpServletRequest request,
+    public List<BidDto> getBids(@PathVariable String sourceId, @PathVariable String source, HttpServletRequest request,
             HttpServletResponse response) {
         log.info("getBid: sourceId=" + sourceId + ", source=" + source + ", accept=" + request.getHeader("Content-Type")
                 + ", Authorization=" + request.getHeader("Authorization"));
-        Bid bid = null;
-        bid = bidService.getBid(sourceId, source);
-        if (bid == null)
-            // use setStatus() instead of sendError() because it allows
-            // ResponseBody to be written
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        List<BidDto> bidDtos = bidService.getBids(sourceId, source);
         response.setHeader("Approved", "true");
-        return bid;
+        return bidDtos;
     }
 
     @ApiOperation(value = "putBid", nickname = "putBid")
@@ -84,13 +81,13 @@ public class BidController {
      *            HttpServletReponse
      * @return boolean
      */
-    public BidStatus putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody Bid bid,
+    public BidStatus putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody BidDto bidDto,
             HttpServletResponse response) throws SQLException {
-        log.info("putBid: sourceId=" + sourceId + ", source=" + source + ", bid=" + bid.toString());
+        log.info("putBid: sourceId=" + sourceId + ", source=" + source + ", bidDto=" + bidDto.toString());
         BidStatus bidStatus = new BidStatus(BidStatus.SUCCESS, "");
-        bid.setSourceId(sourceId);
-        bid.setSource(source);
-        boolean status = bidService.saveBid(bid);
+        bidDto.setSourceId(sourceId);
+        bidDto.setSource(source);
+        boolean status = bidService.saveBid(bidDto);
         if (!status) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             bidStatus.setStatus(BidStatus.FAILURE);
@@ -101,7 +98,7 @@ public class BidController {
     @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json", produces = "application/json")
     @ResponseBody
     /**
-     * Return bid in json format and status code of 200, 404 and 500.
+     * Return a BidDto in json format and status code of 200, 404 and 500.
      * 
      * @param sourceId
      *            original source id
@@ -112,20 +109,25 @@ public class BidController {
      * @param response
      *            HttpServletResponse
      * @return BidStatus in json format
-     * @throws SQLException
-     *             returns 500 status with error html page
-     * @throws IOException
-     *             returns 500 status with error html page
      */
-    public Bid getBidByPathAndParams(@PathVariable String sourceId, @RequestParam("source") String source,
+    public BidDto getBidByPathAndParams(@PathVariable String sourceId, @RequestParam("source") String source,
             @RequestParam(value = "id", required = false) Long id, HttpServletResponse response) throws IOException {
         log.info("getBidByPathAndParams: sourceId=" + sourceId + ", source=" + source + ", id=" + id);
-        Bid bid = bidService.getBid(sourceId, source);
-        if (bid == null)
+        BidDto bidDto = null;
+        List<BidDto> bidDtos = bidService.getBids(sourceId, source);
+        if (id != null)
+            bidDtos = bidDtos.stream()
+                .filter((b) -> b.getId() == id)
+                .collect(Collectors.toList());
+        if (bidDtos == null)
             // use setStatus() instead of sendError() because it allows
             // ResponseBody to be written
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        return bid;
+        else if (bidDtos.size() > 1)
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        else
+            bidDto = bidDtos.get(0);
+        return bidDto;
     }
 
 }

@@ -1,10 +1,14 @@
 package com.coding.service;
 
+import java.util.LinkedList;
+import java.util.List;
+
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coding.dto.BidDto;
 import com.coding.entity.Bid;
 import com.coding.repository.BidRepository;
 
@@ -23,10 +27,14 @@ public class BidService {
     * @return Bid in JSON format
     * @throws 
     */
-    public Bid getBid(String sourceId, String source) {
+    public List<BidDto> getBids(String sourceId, String source) {
         
-        Bid bid= bidRepository.get(sourceId, source);
-        return bid;
+        List<Bid> bids= bidRepository.get(sourceId, source);
+        List<BidDto> bidDtos = new LinkedList<>();
+        for (Bid bid : bids) {
+            bidDtos.add(new BidDto(bid));
+        }
+        return bidDtos;
     }
     
     /**
@@ -34,8 +42,9 @@ public class BidService {
     * @return boolean
     * @throws 
     */
-    public boolean saveBid(Bid bid) {
+    public boolean saveBid(BidDto bidDto) {
         boolean status = true;
+        Bid bid = new Bid(bidDto);
         Bid dbBid = bidRepository.save(bid);
         if (dbBid == null)
             status = false;

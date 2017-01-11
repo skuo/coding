@@ -1,42 +1,24 @@
-package com.coding.entity;
+package com.coding.dto;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.coding.entity.Bid;
 
-import com.coding.dto.BidDto;
-
-@Entity
-@Table(name="bid")
-public class Bid {
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+public class BidDto {
     private Long id;
-    @Column(name="source_id")
     private String sourceId;
-    @Column(name="source")
     private String source;
-    @Column(name="bid",precision=8, scale=5)
     private BigDecimal bid;
-    @Column(name="updated_at")
-    private Timestamp updatedAt;
     
-    public Bid(){
+    public BidDto(){
         
     }
 
-    public Bid(BidDto bidDto) {
-        this.id = bidDto.getId();
-        this.sourceId = bidDto.getSourceId();
-        this.source = bidDto.getSource();
-        this.bid = bidDto.getBid();
-        this.updatedAt = (new Timestamp(new Date().getTime()));
+    public BidDto(Bid bid) {
+        this.id = bid.getId();
+        this.sourceId = bid.getSourceId();
+        this.source = bid.getSource();
+        this.bid = bid.getBid();
     }
     
     public Long getId() {
@@ -71,14 +53,6 @@ public class Bid {
         this.bid = bid;
     }
 
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -87,7 +61,6 @@ public class Bid {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((source == null) ? 0 : source.hashCode());
         result = prime * result + ((sourceId == null) ? 0 : sourceId.hashCode());
-        result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
         return result;
     }
 
@@ -99,16 +72,11 @@ public class Bid {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Bid other = (Bid) obj;
+        BidDto other = (BidDto) obj;
         if (bid == null) {
             if (other.bid != null)
                 return false;
         } else if (bid.compareTo(other.bid) != 0)
-            return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
             return false;
         if (source == null) {
             if (other.source != null)
@@ -120,18 +88,12 @@ public class Bid {
                 return false;
         } else if (!sourceId.equals(other.sourceId))
             return false;
-        if (updatedAt == null) {
-            if (other.updatedAt != null)
-                return false;
-        } else if (!updatedAt.equals(other.updatedAt))
-            return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Bid [id=" + id + ", sourceId=" + sourceId + ", source=" + source + ", bid=" + bid + ", updatedAt="
-                + updatedAt + "]";
+        return "Bid [id=" + id + ", sourceId=" + sourceId + ", source=" + source + ", bid=" + bid + "]";
     }
     
 }

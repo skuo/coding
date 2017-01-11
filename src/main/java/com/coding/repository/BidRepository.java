@@ -1,5 +1,7 @@
 package com.coding.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +13,6 @@ import com.coding.entity.Bid;
 public interface BidRepository extends CrudRepository<Bid,Long> {
 
     @Query("SELECT b FROM Bid b WHERE source_id = :sourceId and source = :source")
-    public Bid get(@Param("sourceId") String sourceId, @Param("source") String source);
+    public List<Bid> get(@Param("sourceId") String sourceId, @Param("source") String source);
     
 }

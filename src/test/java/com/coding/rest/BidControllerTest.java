@@ -7,8 +7,7 @@ import static org.mockito.Mockito.mock;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.coding.dto.BidDto;
 import com.coding.dto.BidStatus;
-import com.coding.entity.Bid;
 import com.coding.repository.BidRepository;
 
 @RunWith(SpringRunner.class)
@@ -49,27 +48,29 @@ public class BidControllerTest {
     public void testBidController() throws SQLException, IOException {
         String sourceId = "sourceId";
         String source = "wp";
-        Bid bid = new Bid();
-        bid.setSourceId("sourceId");
-        bid.setSource("source");
-        bid.setBid(new BigDecimal("1.2345"));
-        bid.setUpdatedAt(new Timestamp(new Date().getTime()));
+        BidDto bidDto = new BidDto();
+        bidDto.setSourceId(sourceId);
+        bidDto.setSource(source);
+        bidDto.setBid(new BigDecimal("1.2345"));
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         // insert a bid
-        BidStatus bidStatus = bidController.putBid(sourceId, source, bid, response);
+        BidStatus bidStatus = bidController.putBid(sourceId, source, bidDto, response);
         assertEquals(bidStatus.getStatus(), BidStatus.SUCCESS);
         // get the inserted bid
-        Bid bid2 = bidController.getBid(sourceId, source, request, response);
-        assertEquals(bid, bid2);
+        List<BidDto> bidDtos2 = bidController.getBids(sourceId, source, request, response);
+        assertEquals(1, bidDtos2.size());
+        BidDto dbBidDto = bidDtos2.get(0);
+        assertEquals(bidDto, bidDtos2.get(0));
         // update bid
-        bid.setBid(new BigDecimal("2.3456"));
-        bidStatus = bidController.putBid(sourceId, source, bid, response);
+        dbBidDto.setBid(new BigDecimal("2.3456"));
+        bidStatus = bidController.putBid(sourceId, source, dbBidDto, response);
         assertEquals(bidStatus.getStatus(), BidStatus.SUCCESS);
         // get updated bid
-        bid2 = bidController.getBid(sourceId, source, request, response);
-        assertEquals(bid, bid2);        
+        bidDtos2 = bidController.getBids(sourceId, source, request, response);
+        assertEquals(1, bidDtos2.size());
+        assertEquals(dbBidDto, bidDtos2.get(0));
     }
 
 }
