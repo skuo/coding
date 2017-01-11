@@ -23,6 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.coding.entity.Bid;
+import com.coding.model.BidStatus;
 import com.coding.repository.BidRepository;
 
 @RunWith(SpringRunner.class)
@@ -57,15 +58,15 @@ public class BidControllerTest {
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         // insert a bid
-        boolean status = bidController.putBid(sourceId, source, bid, response);
-        assertTrue(status);
+        BidStatus bidStatus = bidController.putBid(sourceId, source, bid, response);
+        assertEquals(bidStatus.getStatus(), BidStatus.SUCCESS);
         // get the inserted bid
         Bid bid2 = bidController.getBid(sourceId, source, request, response);
         assertEquals(bid, bid2);
         // update bid
         bid.setBid(new BigDecimal("2.3456"));
-        status = bidController.putBid(sourceId, source, bid, response);
-        assertTrue(status);
+        bidStatus = bidController.putBid(sourceId, source, bid, response);
+        assertEquals(bidStatus.getStatus(), BidStatus.SUCCESS);
         // get updated bid
         bid2 = bidController.getBid(sourceId, source, request, response);
         assertEquals(bid, bid2);        

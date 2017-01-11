@@ -28,7 +28,6 @@ class StreamFilter(object):
     def flush(self):
         self.stream.flush()
 
-
 @task
 def host_type():
     run('uname -a')

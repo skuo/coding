@@ -1,2 +1,0 @@
-export MAVEN_OPTS="-Xmx512m -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,suspend=n,server=y"
-mvn jetty:run

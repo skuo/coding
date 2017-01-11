@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coding.entity.Bid;
+import com.coding.model.BidStatus;
 import com.coding.service.BidService;
 
 @Controller
@@ -79,19 +80,21 @@ public class BidController {
      *            HttpServletReponse
      * @return boolean
      */
-    public boolean putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody Bid bid,
+    public BidStatus putBid(@PathVariable String sourceId, @PathVariable String source, @RequestBody Bid bid,
             HttpServletResponse response) throws SQLException {
         log.info("putBid: sourceId=" + sourceId + ", source=" + source + ", bid=" + bid.toString());
+        BidStatus bidStatus = new BidStatus(BidStatus.SUCCESS, "");
         bid.setSourceId(sourceId);
         bid.setSource(source);
         boolean status = bidService.saveBid(bid);
         if (!status) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            bidStatus.setStatus(BidStatus.FAILURE);
         }
-        return status;
+        return bidStatus;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/bids/{sourceId}", headers = "accept=application/json", produces = "application/json")
     @ResponseBody
     /**
      * Return bid in json format and status code of 200, 404 and 500.

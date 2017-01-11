@@ -22,7 +22,7 @@ or # pass in env or property
 ENV="int" java -DENV -Dprop.env=prop.int -jar ./build/libs/coding-1.0.1.jar --spring.config.location=/data/ 
 ```
 Test running server:
-curl  -H "Accept: application/json" -X GET localhost:{PORT}/
+curl  -H "Accept: application/json" -u user:CodingBreak -X GET localhost:8080/coding/version
 
 Override individual properties at run time:
 ```bash
