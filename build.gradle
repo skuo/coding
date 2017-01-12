@@ -18,11 +18,11 @@ apply plugin: 'docker'
 
 // defined the following so that /coding/info endpoint displays useful info
 group = 'com.coding'
-version = '0.0.1'
+version = '0.0.2'
 
 jar {
   baseName = 'coding'
-  version = '0.0.1'
+  version = version
 }
 
 description = """coding"""
@@ -68,7 +68,7 @@ dependencies {
 
 // Set tag explicitly.  See README.md for more detail
 //ext.dockerGroup = 'com.coding'
-ext.dockerTag = '0.0.1'
+ext.dockerTag = version
 
 task buildDocker(type: Docker, dependsOn: build) {
   push = false

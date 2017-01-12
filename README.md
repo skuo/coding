@@ -223,6 +223,9 @@ kubectl delete service coding-app
 # scale replicas
 kubectl scale deployment coding-app --replicas=2
 
+# deploy a new image
+kubectl set image deployment/coding-app coding-app=coding:0.0.2
+
 # edit
 kubectl edit deployment coding-app
 ```
