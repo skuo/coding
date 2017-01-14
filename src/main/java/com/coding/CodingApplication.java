@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -47,7 +48,7 @@ public class CodingApplication {
                 .title("Spring Boot REST API with Swagger")
                 .description("Spring Boot REST API with Swagger")
                 .termsOfServiceUrl("http://com.coding")
-                .contact("Steve Kuo")
+                .contact(new Contact("Steve Kuo","http://com.coding/skuo","skuo@coding.com"))
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://githuh.com")
                 .version("2.0")

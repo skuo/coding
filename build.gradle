@@ -35,7 +35,6 @@ tasks.withType(JavaCompile) {
 
 repositories {
   mavenCentral()
-  //maven { url "http://jolbox.com/bonecp/downloads" }
 }
 
 springBoot {

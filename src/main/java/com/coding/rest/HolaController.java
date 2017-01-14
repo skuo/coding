@@ -26,7 +26,11 @@ public class HolaController {
         } catch (UnknownHostException uhe) {
             hostname = "unknown";
         }
-        String jsonStr = "{\"hostname\":\"" +  hostname + "\"}";
+        String jsonStr = 
+                "{"
+                + "\"hostname\":\"" +  hostname + "\"" + ","
+                + "\"suggestion\":\"try git bootRun --debug-jvm\""
+                + "}";
         log.info(jsonStr);
         return jsonStr;
     }
