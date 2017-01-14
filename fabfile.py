@@ -34,49 +34,52 @@ def host_type():
 
 # ---------------------------------------------------------------
 
-VERSION="0.0.1"
+VERSION=""
 
 @task
-def build_and_debug(version=VERSION):
+def build_and_debug():
     with settings(warn_only=True):
         local("pwd")
+        read_build_version()
         #local("curl -X POST -u steve:kuo localhost:8090/coding/shutdown") # not necessary, CTRL-C works fine
         local("./gradlew clean build")
-        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/coding-%s.jar" % version)
+        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/coding-%s.jar" % VERSION)
    
 @task
-def build_skip_tests_and_debug(version=VERSION):
+def build_skip_tests_and_debug():
     with settings(warn_only=True):
         print "\nTODO\n"
 
 @task
-def build_and_start(version=VERSION):
+def build_and_start():
     with settings(warn_only=True):
         local("pwd")
+        read_build_version()
         #local("curl -X POST -u steve:kuo localhost:8090/coding/shutdown") # not necessary, CTRL-C works fine
         local("./gradlew clean build")
-        local("java -server -Xms1700M -Xmx1700M -jar build/libs/coding-%s.jar" % version)
+        local("java -server -Xms1700M -Xmx1700M -jar build/libs/coding-%s.jar" % VERSION)
 
 @task
-def restart_and_debug(version=VERSION):
+def restart_and_debug():
     with settings(warn_only=True):
         local("pwd")
+        read_build_version()
         #local("curl -X POST -u steve:kuo localhost:8090/coding/shutdown") # not necessary, CTRL-C works fine
-        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/coding-%s.jar" % version)
+        local("java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=n -jar build/libs/coding-%s.jar" % VERSION)
 
 @task
-def build_and_startDocker(version=VERSION):
+def build_and_startDocker():
     with settings(warn_only=True):
         local("pwd")
-        local("./gradlew clean build")
-        local("./gradlew buildDocker")
+        read_build_version()
+        local("./gradlew clean build buildDocker")
         startDocker()
         
 @task
-def startDocker(version=VERSION):
+def startDocker():
     with settings(warn_only=True):
         local("pwd")
-        local("docker run -p:8080:8080 -v /data:/data -t --rm coding:%s --spring.profiles.active=dev" % version)
+        local("docker run -p:8080:8080 -v /data:/data -t --rm coding:%s --spring.profiles.active=dev" % VERSION)
     
 
 @task
@@ -104,6 +107,8 @@ def push_and_tag():
 @task        
 def read_build_version():
     global VERSION
-    root=xml.etree.ElementTree.parse("pom.xml").getroot()
-    VERSION=root.find("{http://maven.apache.org/POM/4.0.0}version").text + "-local"
-    print("VERSION=%s" % VERSION)
+    for line in open("build.gradle","r"):
+        if line.startswith("version ="):
+            tokens = line.split(" ")
+            VERSION = tokens[2].replace("'","").strip("\n")
+    print("VERSION=[%s]" % VERSION)
