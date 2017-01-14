@@ -19,7 +19,6 @@ java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4
 ```
 
 ##Run app as jar
----
 ```bash
 java -jar ./build/libs/coding-{VERSION_NUMBER}.jar --spring.profiles.active=dev
 ```
@@ -172,12 +171,12 @@ DOCKER_CERT_PATH=
 export DOCKER_API_VERSION="1.23" 
 ```
 
-##Basic coding: build and use application-dev properties to CoreOS VM
+##build and use application-dev properties to CoreOS VM
 ```bash
 ./gradlew clean build buildDocker
 ```
 
-### Start the basic coding in a docker container
+### Start coding in a docker container
 ```bash
 docker run -p:8080:8080 -t --rm coding
 docker run -p:9898:8080 -t --rm coding # if 8080 is taken like it is the case for kubernetes dashboard
@@ -191,7 +190,7 @@ curl -H "Accept: application/json" -X GET -u user:CodingBreak localhost:9898/cod
 http://192.168.64.2:9898/coding/swagger-ui.html
 ```
 
-##Start basic coding in kubernetes
+##Start coding in kubernetes
 ```bash
 kubectl create -f coding-deploy.yaml # port 9090:8080
 
