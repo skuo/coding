@@ -42,6 +42,8 @@ Override individual properties at run time:
 java -jar ./build/libs/coding-0.0.1.jar --spring.profiles.active=dev --spring.datasource.username= otherusername --spring.datasource.password= otherpassword --server.port=8888 --spring.config.location=location for override properties file
 ```
 
+- - - -
+
 #Build Project and Docker Image
 ```bash
 ./gradlew buildDocker \[-PdockerGroup={Optional Group}] [-PdockerTag={Optional tag}]
@@ -88,6 +90,8 @@ fab build_and_debug # debug port at 4000, tomcat listens at 8080
 http://localhost:8080/coding/swagger-ui.html
 ```
 
+- - - -
+
 #Built in Spring Boot Endpoints
 ```bash
 http://localhost:8080/coding/health
@@ -103,6 +107,8 @@ http://localhost:8080/coding/mappings
 http://localhost:8080/coding/shutdown # not enabled by default
 http://localhost:8080/coding/trace
 ```
+
+- - - -
 
 # Docker Installation and Useful Commands
 Installation
@@ -132,6 +138,8 @@ $> docker logs -f {CONTAINER ID}
 # connect to a docker container and run sh
 $> docker exec -it 377a08827a80 sh
 ```
+
+- - - -
 
 #Kubernetes
 
