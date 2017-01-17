@@ -3,7 +3,9 @@ package com.coding;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -14,7 +16,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
+@EnableAutoConfiguration
 @SpringBootApplication
+@RefreshScope
 public class CodingApplication { 
 
     public static void main(String[] args) {
