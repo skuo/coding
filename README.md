@@ -103,6 +103,7 @@ http://localhost:8080/coding/env
 http://localhost:8080/coding/info     # display build info
 http://localhost:8080/coding/metrics
 http://localhost:8080/coding/mappings
+http://localhost:8888/coding-config-server/refresh  # it's a post, refresh all @RefreshScope properties
 http://localhost:8080/coding/shutdown # not enabled by default
 http://localhost:8080/coding/trace
 ```
