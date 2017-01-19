@@ -1,3 +1,9 @@
+# Description
+Coding 
+ - Get configuration properties from coding-config-server
+ - Register itself with coding-eureka
+ - Provide service for coding-facade
+
 #Build project with gradle
 ```bash
 ./gradlew build
