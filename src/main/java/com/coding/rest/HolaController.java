@@ -5,11 +5,14 @@ import java.net.UnknownHostException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.coding.util.RandomUtil;
 
 @RestController
 @RefreshScope
@@ -17,6 +20,9 @@ public class HolaController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    RandomUtil randomUtil;
+    
     @Value("${example.property}")
     private String exampleProperty;
 
@@ -26,6 +32,9 @@ public class HolaController {
      */
     @RequestMapping(value = "/hola", method = RequestMethod.GET, produces = "application/json")
     public String hola() {
+        // sleep 11000 milliseconds 1 out of 3 times
+        randomUtil.randomRunLong(11000, 3); 
+
         String hostname = null;
         try {
             hostname = InetAddress.getLocalHost().getHostAddress();
