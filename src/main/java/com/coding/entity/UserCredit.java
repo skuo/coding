@@ -54,7 +54,7 @@ public class UserCredit implements java.io.Serializable{
     private Date updatedAt;
 
     @Singular
-    @OneToMany(mappedBy = "userCredit", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userCredit", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     Set<UserCreditHistory> histories;
     
     @Tolerate
