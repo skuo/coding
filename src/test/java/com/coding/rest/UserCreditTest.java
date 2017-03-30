@@ -5,16 +5,12 @@ import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 import com.coding.entity.UserCredit;
 
 public class UserCreditTest {
-    private Log log = LogFactory.getLog(getClass());
-
-    public int validateUserCredit(UserCredit uc, Long expUserId, BigDecimal expPurchaseCredit,
+    public static int validateUserCredit(UserCredit uc, Long expUserId, BigDecimal expPurchaseCredit,
             BigDecimal expStoreCredit) {
         if (expUserId == null)
             assertNull(uc.getUserId());
@@ -33,7 +29,6 @@ public class UserCreditTest {
                 .build();
 
         assertEquals(1, validateUserCredit(uc, userId1, purchaseCredit80, storeCredit20));
-        
     }
 
 }

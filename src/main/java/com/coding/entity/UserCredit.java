@@ -1,22 +1,23 @@
 package com.coding.entity;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
 
 @Data
 @Builder
-@EqualsAndHashCode
 @Entity
 @Table(name="user_credit")
 public class UserCredit {
@@ -29,8 +30,26 @@ public class UserCredit {
     @Column(name="storeCredit",precision=8, scale=2)
     private BigDecimal storeCredit;
     @Column(name="created_at")
-    private Timestamp createdAt;
+    private Date createdAt;
     @Column(name="updated_at")
-    private Timestamp updatedAt;
+    private Date updatedAt;
 
+    @Tolerate
+    // JPA needs a default constructor
+    public UserCredit() {
+        
+    }
+    
+    @PrePersist
+    private void prePersist() {
+        Date now = new Date();
+        createdAt = now;
+        updatedAt = now;
+    }
+    
+    @PreUpdate
+    private void preUpdate() {
+        Date now = new Date();
+        updatedAt = now;
+    }
 }
