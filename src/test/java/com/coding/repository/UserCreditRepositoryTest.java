@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.coding.entity.UserCredit;
+import com.coding.entity.UserCreditHistory;
 import com.coding.rest.UserCreditTest;
 
 @RunWith(SpringRunner.class)
@@ -32,20 +35,35 @@ public class UserCreditRepositoryTest {
     @Autowired
     private UserCreditRepository userCreditRepo;
     
-    @Before public void setup() {
-        UserCredit userCredit = UserCredit.builder()
+    @Before
+    @Transactional
+    public void setup() {
+        UserCredit uc = UserCredit.builder()
                 .userId(userId1)
                 .purchaseCredit(purchaseCredit80)
                 .storeCredit(storeCredit20)
                 .build();
-        userCreditRepo.save(userCredit);
-
-        userCredit = UserCredit.builder()
-                .userId(userId2)
+        UserCreditHistory uch = UserCreditHistory.builder()
+                .userCredit(uc)
                 .purchaseCredit(purchaseCredit80)
                 .storeCredit(storeCredit20)
                 .build();
-        userCreditRepo.save(userCredit);
+        uc.add(uch);
+        userCreditRepo.save(uc);
+        
+
+        UserCredit uc2 = UserCredit.builder()
+                .userId(userId2)
+                .purchaseCredit(purchaseCredit50)
+                .storeCredit(storeCredit20)
+                .build();
+        UserCreditHistory uch2 = UserCreditHistory.builder()
+                .userCredit(uc2)
+                .purchaseCredit(purchaseCredit50)
+                .storeCredit(storeCredit20)
+                .build();
+        uc2.add(uch2);
+        userCreditRepo.save(uc2);
 
     }
     
@@ -62,14 +80,21 @@ public class UserCreditRepositoryTest {
         // find UserCredit with credits
         List<UserCredit> userCredits = userCreditRepo.availableCredit();
         assertEquals(2, userCredits.size());
-        int asserted = 0;
+        int assertedUc = 0, assertedUch = 0;
         for (UserCredit uc: userCredits) {
-            if (uc.getUserId() == userId1)
-                asserted += UserCreditTest.validateUserCredit(dbUserCredit1, userId1, purchaseCredit50, storeCredit20);
-            else if (uc.getUserId() == userId2)
-                asserted += UserCreditTest.validateUserCredit(dbUserCredit1, userId2, purchaseCredit80, storeCredit20);
+            if (uc.getUserId() == userId1) {
+                assertedUc += UserCreditTest.validateUserCredit(uc, userId1, purchaseCredit50, storeCredit20);
+                UserCreditHistory uch = (UserCreditHistory) uc.getHistories().toArray()[0];
+                assertedUch += UserCreditTest.validateUserCreditHistory(uch, userId1, purchaseCredit80, storeCredit20);
+            }
+            else if (uc.getUserId() == userId2) {
+                assertedUc += UserCreditTest.validateUserCredit(uc, userId2, purchaseCredit50, storeCredit20);
+                UserCreditHistory uch = (UserCreditHistory) uc.getHistories().toArray()[0];
+                assertedUch += UserCreditTest.validateUserCreditHistory(uch, userId2, purchaseCredit50, storeCredit20);
+            }
         }
-        assertEquals(2, asserted);
+        assertEquals(2, assertedUc);
+        assertEquals(2, assertedUch);
     }
        
 }
