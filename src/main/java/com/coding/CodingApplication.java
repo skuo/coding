@@ -52,7 +52,7 @@ public class CodingApplication {
                 .termsOfServiceUrl("http://com.coding")
                 .contact(new Contact("Steve Kuo","http://com.coding/skuo","skuo@coding.com"))
                 .license("Apache License Version 2.0")
-                .licenseUrl("https://githuh.com")
+                .licenseUrl("https://github.com")
                 .version("2.0")
                 .build();
     }
