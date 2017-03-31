@@ -50,7 +50,6 @@ public class UserCreditHistory implements java.io.Serializable {
     private Date updatedAt;
 
     @Tolerate
-    // JPA needs a default constructor
     public UserCreditHistory() {
         
     }
