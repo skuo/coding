@@ -4,12 +4,12 @@ Coding
  - Register itself with coding-eureka
  - Provide service for coding-facade
 
-#Build project with gradle
+# Build project with gradle
 ```bash
 ./gradlew build
 ```
 
-##Automatic Reloading of Changed Classes 
+## Automatic Reloading of Changed Classes 
 ```bash
 # in a terminal
 ./gradlew build --continuous
@@ -19,12 +19,12 @@ Coding
 ./gradlew bootRun --debug-jvm # debug port is 5005
 ```
 
-##Debug app as jar
+## Debug app as jar
 ```bash
 java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4000,server=y,suspend=y -jar build/libs/coding-0.1.0.jar --spring.profiles.active=dev > console.log 2>&1 &
 ```
 
-##Run app as jar
+## Run app as jar
 ```bash
 java -jar ./build/libs/coding-{VERSION_NUMBER}.jar --spring.profiles.active=dev -Dspring.cloud.config.uri=http://localhost:8888
 ```
