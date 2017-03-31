@@ -4,7 +4,7 @@ Coding
  - Register itself with coding-eureka
  - Provide service for coding-facade
 
-# Build project with gradle
+## Build project with gradle
 ```bash
 ./gradlew build
 ```
@@ -49,12 +49,12 @@ java -jar ./build/libs/coding-0.0.1.jar --spring.profiles.active=dev --spring.da
 
 - - - -
 
-#Build Project and Docker Image
+## Build Project and Docker Image
 ```bash
 ./gradlew buildDocker \[-PdockerGroup={Optional Group}] [-PdockerTag={Optional tag}]
 ```
 
-##Run app with docker
+## Run app with docker
 ```bash
 docker run -p:{LOCAL_HOST_PORT_TO_MAP}:8080 [-v {OPTIONAL_VOLUME_TO_MOUNT}:/data] -t {IMAGE_NAME} --spring.profiles.active=dev [--spring.config.location={PATH_TO_OVERRIDE_PROPERTIES_FILES}]
 ```
@@ -80,24 +80,24 @@ com.coding/coding            1.0.1               23b9f322f7ac        4 seconds a
 coding                       latest              9c02aa4b910a        10 minutes ago      265.5 MB
 ```
 
-#Shutdown
+## Shutdown
 ```bash
 curl -X POST -u user:CodingBreak localhost:8080/coding/shutdown
 ```
 
-#Fabric
+## Fabric
 ```bash
 fab build_and_debug # debug port at 4000, tomcat listens at 8080
 ```
 
-#Swagger UI
+## Swagger UI
 ```bash
 http://localhost:8080/coding/swagger-ui.html
 ```
 
 - - - -
 
-#Built in Spring Boot Endpoints
+## Built in Spring Boot Endpoints
 ```bash
 http://localhost:8080/coding/health
 
@@ -147,7 +147,7 @@ $> docker exec -it 377a08827a80 sh
 
 - - - -
 
-#Kubernetes
+# Kubernetes
 
 ## Installation on Mac
 Please reference https://deis.com/blog/2015/zero-to-kubernetes-dev-environment-on-os-x/
@@ -168,7 +168,7 @@ Please reference https://deis.com/blog/2015/zero-to-kubernetes-dev-environment-o
     + # downgrade client version
     + export DOCKER_API_VERSION="1.23" 
 
-##DOCKER related environment variables iTerm2
+## DOCKER related environment variables iTerm2
 ```bash
 # set by kube-solo during start up
 DOCKER_HOST=tcp://192.168.64.2:2375 
@@ -178,7 +178,7 @@ DOCKER_CERT_PATH=
 export DOCKER_API_VERSION="1.23" 
 ```
 
-##build and use application-dev properties to CoreOS VM
+## build and use application-dev properties to CoreOS VM
 ```bash
 ./gradlew clean build buildDocker
 ```
@@ -193,11 +193,11 @@ Test the running docker container on CoreOS VM (first ssh k8solo-01)
 curl -H "Accept: application/json" -X GET -u user:CodingBreak 192.168.64.2:9898/coding/version
 curl -H "Accept: application/json" -X GET -u user:CodingBreak localhost:9898/coding/version  # only work on CoreOS VM
 
-##Swagger UI
+## Swagger UI
 http://192.168.64.2:9898/coding/swagger-ui.html
 ```
 
-##Start coding in kubernetes
+## Start coding in kubernetes
 ```bash
 kubectl create -f coding-deploy.yaml # port 9090:8080
 
@@ -210,7 +210,7 @@ Test the k8s service on CoreOS VM (first ssh k8solo-01)
 curl -H "Accept: application/json" -X GET -u user:CodingBreak 192.168.64.2:31625/coding/hola # NodePort
 curl -H "Accept: application/json" -X GET -u user:CodingBreak 10.100.106.253:9999/coding/hola
 
-##Swagger UI
+## Swagger UI
 http://192.168.64.2:31625/coding/swagger-ui.html
 ```
 
