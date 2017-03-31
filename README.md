@@ -2,6 +2,7 @@
 Coding 
  - Get configuration properties from coding-config-server
  - Register itself with coding-eureka
+ - Provide a Swagger UI
  - Provide service for coding-facade
 
 ## Build project with gradle
