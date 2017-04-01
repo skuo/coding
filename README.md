@@ -27,7 +27,7 @@ java -server -Xms1700M -Xmx1700M -Xdebug -Xrunjdwp:transport=dt_socket,address=4
 
 ## Run app as jar
 ```bash
-java -jar ./build/libs/coding-{VERSION_NUMBER}.jar --spring.profiles.active=dev -Dspring.cloud.config.uri=http://localhost:8888
+java -Dspring.cloud.config.uri=http://localhost:9999/coding-config-server -jar ./build/libs/coding-{VERSION_NUMBER}.jar --spring.profiles.active=dev 
 ```
 example:
 ```bash
