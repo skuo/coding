@@ -7,7 +7,7 @@ kind: Service
 metadata:
   labels:
     app: coding-app
-    version: 0.0.1
+    version: 0.0.2
   name: coding-app
   namespace: default
 spec:
@@ -19,6 +19,6 @@ spec:
     targetPort: 8080
   selector:
     app: coding-app
-    version: 0.0.1
+    version: 0.0.2
   sessionAffinity: None
   type: NodePort

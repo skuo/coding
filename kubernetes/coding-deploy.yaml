@@ -8,7 +8,7 @@ metadata:
   generation: 2
   labels:
     app: coding-app
-    version: 0.0.1
+    version: 0.0.2
   name: coding-app
   namespace: default
 spec:
@@ -16,7 +16,7 @@ spec:
   selector:
     matchLabels:
       app: coding-app
-      version: 0.0.1
+      version: 0.0.2
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -26,11 +26,11 @@ spec:
     metadata:
       labels:
         app: coding-app
-        version: 0.0.1
+        version: 0.0.2
       name: coding-app
     spec:
       containers:
-      - image: coding:0.0.1
+      - image: coding:0.0.2
         imagePullPolicy: IfNotPresent
         name: coding-app
         resources: {}
