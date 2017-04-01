@@ -65,6 +65,7 @@ example:
 docker run -p:8080:8080 -v /data:/data -t coding --spring.profiles.active=dev
 # if /data/application-secret.properties exist
 # use -v /Users/skuo/.aws:/root/.aws for local docker run
+# S3_SECRETS_BUCKET and S3_SECRETS_KEY are used in Dockerfile to set java properties
 docker run -p:8080:8080 -v /data:/data -v /Users/skuo/.aws:/root/.aws -t -e "S3_SECRETS_BUCKET=coding-private" -e "S3_SECRETS_KEY=coding/int/application-int.properties" --rm coding
 ```
 Test running server:
