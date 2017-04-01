@@ -79,7 +79,7 @@ def build_and_startDocker():
 def startDocker():
     with settings(warn_only=True):
         local("pwd")
-        local("docker run -p:8080:8080 -v /data:/data -t --rm coding:%s --spring.profiles.active=dev" % VERSION)
+        local("docker run -p:8080:8080 -v /data:/data -t --rm coding:%s --spring.profiles.active=docker" % VERSION)
     
 
 @task
